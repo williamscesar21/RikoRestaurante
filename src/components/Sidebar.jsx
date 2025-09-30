@@ -35,6 +35,8 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
     localStorage.removeItem('token');
     localStorage.removeItem('restaurantId');
     localStorage.removeItem('restaurantName');
+    localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('rol');
     window.location.href = '/login';
   };
 
