@@ -1,0 +1,289 @@
+.ordenes-container {
+    padding: 20px;
+    margin-top: 5vh;
+    margin-right: auto;
+    margin-left: 5%;
+}
+
+.ordenes-container h1 {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.orden-add {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-direction: column;
+}
+
+.orden-add input {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.orden-add button {
+    padding: 10px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.orden-add button:hover {
+    background-color: #0056b3;
+}
+
+.ordenes-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.productos-add {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.productos-add select,
+.productos-add input {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.productos-add button {
+    padding: 10px;
+    font-size: 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.productos-add button:hover {
+    background-color: #218838;
+}
+
+@media (max-width: 768px) {
+    .orden-add {
+        flex-direction: column; /* Apilar los campos en pantallas pequeñas */
+    }
+
+    .orden-add input,
+    .productos-add select,
+    .productos-add input {
+        flex: 1 1 100%; /* Ocupa el 100% del ancho en dispositivos pequeños */
+    }
+
+    .orden-add button,
+    .productos-add button {
+        width: 100%; /* El botón ocupa todo el ancho */
+    }
+
+    .ordenes-container {
+        max-width: 90%; /* Reducir el ancho de la sección en pantallas más pequeñas */
+        margin-left: 5%;
+    }
+
+    /* Ocultar keypad en pantallas móviles */
+    .numeric-keypad {
+        display: none;
+    }
+}
+
+ul{
+    list-style-type: none;
+    margin: 5px;
+    padding: 5px;
+}
+
+.orden-item {
+    /* background: radial-gradient(circle, rgba(255, 255, 255, 0.225) 0%, rgba(58, 61, 63, 0.5) 80%);  */
+    background-color: #2c2c2c;
+    border: 1px solid #444; /* Borde gris oscuro */
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+    max-width: 300px;
+    transition: all 0.3s ease;
+}
+
+.orden-item:hover {
+    transform: translateY(-5px);
+    cursor: pointer;
+}
+
+.orden-info{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.orden-id{
+    border-radius: 25px;
+    background-color: #444;
+    color: #c8c6c6;
+    padding: 5px 10px;
+}
+
+.orden-estado{
+    border-radius: 25px;
+    background-color: rgb(203, 231, 255);
+    padding: 5px 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.orden-cliente{
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255);
+    color: blueviolet;
+    padding: 5px 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.orden-total{
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255);
+    color: #00600d;
+    padding: 5px 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.orden-metodo{
+    border-radius: 5px;
+    background-color: #444;
+    color: #c8c6c6;
+    padding: 5px 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+    font-size: 12px;
+}
+
+.orden-fecha{
+    color: #ffffff;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: x-small;
+    padding: 25px;
+}
+
+.choice-product{
+    display: flex;
+    flex-direction: column;
+    align-items: last baseline;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.chosen-product-list{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.chosen-product {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(58, 61, 63, 0.5) 90%); /* Gradiente radial para el efecto de iluminación */
+    border-radius: 10px; /* Bordes redondeados */
+    border: 0.2px solid rgba(170, 170, 170, 0.5); /* Borde sutil semitransparente */
+    padding: 15px; /* Espaciado interno */
+    margin: 10px; /* Espaciado externo */
+    display: flex; /* Usar flexbox para alinear elementos */
+    flex-direction: column; /* Colocar elementos en columna */
+    transition: transform 0.2s, background 0.2s; /* Transición suave para el efecto hover */
+    backdrop-filter: blur(10px); /* Efecto de desenfoque de fondo */
+    width: fit-content;
+}
+
+.chosen-product:hover {
+    transform: scale(1.05); /* Efecto de aumento al pasar el mouse */
+    border: 0.2px solid rgba(255, 255, 255, 0.5); /* Cambiar el borde al hacer hover */
+}
+
+.chosen-product-name {
+    color: #d292ff; /* Color morado */
+    font-weight: bold; /* Negrita */
+    margin-bottom: 5px; /* Espaciado inferior */
+}
+
+.chosen-product-quantity {
+    color: #ffcc00; /* Color amarillo */
+    margin-bottom: 5px; /* Espaciado inferior */
+}
+
+.chosen-product-quantity input{
+    text-align: center;
+    width: fit-content;
+    height: 30px;
+    border-radius: 5px;
+    border: 0.2px solid rgba(255, 255, 255, 0.5);
+}
+
+.chosen-product-price {
+    color: #ffffff; /* Color negro para el precio */
+    font-size: 1.2em; /* Tamaño de fuente más grande */
+}
+
+.chosen-product-title{
+    font-size: 1.5em;
+    margin-top: 10px;
+}
+
+.chosen-product-buttons{
+    display: flex;
+    flex-direction: row;
+    align-items:first baseline;
+    gap: 10px;
+    justify-content: right;
+}
+
+.chosen-edit{
+    color: #0400ff;
+}
+
+.chosen-delete{
+    color: #ff0000;
+}
+
+.chosen-edit:hover, .chosen-delete:hover{
+    cursor: pointer;
+}
+
+.step-buttons{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    justify-content: space-between;
+}

@@ -1,0 +1,239 @@
+/* Fondo general */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #fff;
+  display: flex;
+  /* align-items: center;
+  justify-content: center; */
+  height: 100vh;
+}
+
+.login-container {
+  width: 100vw;
+  height: 100%;
+  background-image: url('patternriko.jpg');
+  background-size: cover;
+  background-position: center;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Contenedor principal */
+.login-wrapper {
+  display: flex;
+  background: rgba(255, 255, 255, 0.164); /* transparente */
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  border-radius: 20px;
+  overflow: hidden;
+  width: 100%;
+  height: 90vh;
+  max-width: 900px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+}
+
+/* Sección izquierda - formulario */
+.login-left {
+  flex: 1;
+  padding: 50px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-left h2 {
+  font-size: 28px;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.login-left p {
+  font-size: 14px;
+  color: #fff;
+  margin-bottom: 30px;
+}
+
+/* Inputs */
+.login-left input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: none;
+  border-bottom: 2px solid #ddd;
+  font-size: 15px;
+  background: transparent;
+  transition: border-color 0.3s;
+  border-radius: 0;
+  color: #ffffff;
+}
+
+.login-left input::placeholder {
+  color: #ffffff;
+}
+
+.login-left input:focus {
+  outline: none;
+  border-bottom: 2px solid #ff703b;
+  border-radius: 0;
+}
+
+/* Botón */
+.btn-login {
+  width: 100%;
+  padding: 14px;
+  background: #FF7F00;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-login:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(255, 112, 59, 0.4);
+}
+
+/* Error */
+.error {
+  color: #e63946;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+/* Sección derecha - ilustración */
+.login-right {
+  flex: 1;
+  background: linear-gradient(135deg, #ffe5d3, #fff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.login-right img {
+  width: 100%;
+  max-width: 450px;
+  max-height: 450px;
+  object-fit: contain;
+}
+
+.logo-login {
+  width: 120px;
+  margin-bottom: 20px;
+}
+
+/* ------------------ */
+/* 🌍 Responsividad   */
+/* ------------------ */
+
+/* Tablets (≤ 1024px) */
+@media (max-width: 1024px) {
+  .login-wrapper {
+    height: auto;
+    min-height: 80vh;
+  }
+
+  .login-left {
+    padding: 40px 30px;
+  }
+
+  .login-left h2 {
+    font-size: 24px;
+  }
+
+  .login-right img {
+    max-width: 350px;
+    max-height: 350px;
+  }
+}
+
+/* Móviles grandes (≤ 768px) */
+@media (max-width: 768px) {
+  .login-wrapper {
+    flex-direction: column;
+    max-width: 95%;
+    height: auto;
+    min-height: unset;
+    padding: 20px;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+  }
+
+  .logo-login {
+    width: 100px;
+    margin-bottom: 15px;
+  }
+
+  .login-left, .login-right {
+    flex: unset;
+    width: 100%;
+    text-align: center;
+  }
+
+  .login-left {
+    padding: 30px 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .login-left h2 {
+    font-size: 22px;
+  }
+
+  .btn-login {
+    padding: 12px;
+    font-size: 15px;
+  }
+
+  .login-right {
+    padding: 10px;
+    background: transparent;
+  }
+
+  .login-right img {
+    max-width: 280px;
+    max-height: 280px;
+    display: none;
+  }
+}
+
+/* Móviles pequeños (≤ 480px) */
+@media (max-width: 480px) {
+  .login-wrapper {
+    border-radius: 12px;
+    box-shadow: none;
+    background: rgba(255, 255, 255, 0.451);
+  }
+
+  .login-left {
+    padding: 20px 15px;
+  }
+
+  .login-left h2 {
+    font-size: 20px;
+    color: #713500;
+  }
+
+  .login-left p {
+    font-size: 13px;
+  }
+
+  .login-right img {
+    max-width: 220px;
+    max-height: 220px;
+    display: none; /* Ocultar imagen en móviles muy pequeños */
+  }
+}

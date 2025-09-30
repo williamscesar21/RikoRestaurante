@@ -1,0 +1,82 @@
+.meseros-container {
+    padding: 20px;
+    margin-top: 5vh;
+    margin-left: 5%;
+  }
+  
+  .meseros-container h1 {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  .meseros-add {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .meseros-add input {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .meseros-add button {
+    padding: 10px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .meseros-add button:hover {
+    background-color: #0056b3;
+  }
+  
+  .meseros-list {
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  
+  .meseros-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    align-items: center;
+    background-color: #2c2c2c;
+    border: 1px solid #444;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+    color: #fff;
+    width: fit-content;
+  }
+  
+  .meseros-item span {
+    font-size: 16px;
+  }
+  
+  .meseros-item button {
+    color: rgb(255, 0, 0);
+    background-color: transparent;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .meseros-item button:hover {
+    background-color: #00000000;
+  }
+  

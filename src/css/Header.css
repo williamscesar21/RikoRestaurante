@@ -1,0 +1,107 @@
+/* Header Container */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  padding: 0px 10px; /* Ajuste de padding para que haya más espacio */
+  background-color: #fff; /* Fondo transparente */
+  color: #000000; /* Texto blanco */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000; /* Asegura que el header esté encima de otros elementos */
+  width: 100%;
+}
+
+/* Botón de menú */
+.menu-button {
+  background: none;
+  border: none;
+  color: #FF7F00;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.menu-button:hover {
+  background-color: #FF7F00;
+  border-radius: 4px; /* Bordes redondeados para el hover */
+  color: #ffffff;
+}
+
+/* Nombre del restaurante */
+.restaurant-name {
+  font-size: 1.5rem;
+  font-weight: lighter;
+  letter-spacing: 1px;
+  color: #1f1f1f;
+  margin-left: 20px; /* Espacio al lado izquierdo para separar */
+}
+
+/* Contenedor de los íconos */
+.header-icons {
+  display: flex;
+  gap: 20px; /* Espacio entre los íconos */
+}
+
+/* Estilo de los enlaces de los íconos */
+.header-link {
+  color: #ff0000;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: color 0.3s ease; /* Transición suave en el hover */
+}
+
+.header-link:hover {
+  color: #f39c12; /* Cambiar color al pasar el mouse */
+}
+
+/* Media Query para pantallas más pequeñas */
+@media (max-width: 768px) {
+  /* Aseguramos que el contenedor se ajuste */
+  .header-container {
+    padding: 0px 5px; /* Reducir padding en pantallas pequeñas */
+    flex-direction: row; /* Colocar los elementos en columna */
+    align-items: center; /* Alinear los elementos hacia el inicio */
+  }
+
+  /* Ajustar el tamaño del nombre del restaurante */
+  .restaurant-name {
+    font-size: 1.2rem;
+    margin-left: 0; /* Eliminar margen izquierdo */
+    margin-bottom: 10px; /* Agregar espacio debajo del nombre */
+  }
+
+  /* Reducción de tamaño de íconos */
+  .header-icons {
+    gap: 15px; /* Reducir espacio entre íconos */
+  }
+
+  /* Botón de menú más grande en pantallas pequeñas */
+  .menu-button {
+    font-size: 1rem; /* Aumentar tamaño del botón de menú */
+  }
+}
+
+/* Media Query para pantallas muy pequeñas (como móviles en modo retrato) */
+@media (max-width: 480px) {
+  /* Reducir aún más el tamaño de la fuente y los íconos */
+  .restaurant-name {
+    font-size: 1rem; /* Font-size más pequeño */
+  }
+
+  .header-link {
+    font-size: 1rem; /* Font-size de los enlaces de íconos más pequeños */
+  }
+
+  /* Asegurarse de que el botón de menú siga visible */
+  .menu-button {
+    font-size: 1rem; /* Aumentar aún más el tamaño del botón de menú */
+  }
+
+  /* Ajustar íconos */
+  .header-icons {
+    gap: 10px; /* Reducir el espacio entre los íconos */
+  }
+}

@@ -1,0 +1,68 @@
+.acciones-container {
+    text-align: center;
+    margin: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.acciones-container h2 {
+    font-size: 2rem;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.acciones-buttons {
+    display: flex;
+    flex-wrap: wrap; /* Permite que los botones se envuelvan en varias filas */
+    justify-content: center;
+    gap: 20px;
+}
+
+.accion-button {
+    background: #FF7F00;
+    color: white;
+    border: none;
+    border-radius: 10px; /* Ajuste para esquinas ligeramente redondeadas */
+    width: 15vw; /* Ancho fijo para formar el cuadrado */
+    height: 15vh; /* Alto igual al ancho */
+    font-size: 1.2rem; /* Tamaño reducido para ajustar texto */
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.accion-button:hover {
+    background-color: #e27100;
+    transform: scale(1.1); /* Añade un pequeño efecto de aumento al pasar el cursor */
+}
+
+/* Media Queries para hacer el diseño responsive */
+@media (max-width: 768px) {
+    .acciones-container {
+        margin: 20px; /* Reduce el margen en pantallas más pequeñas */
+    }
+
+    .acciones-container h2 {
+        font-size: 1.5rem; /* Reduce el tamaño del texto en pantallas más pequeñas */
+    }
+
+    .accion-button {
+        width: 120px; /* Reduce el ancho de los botones */
+        height: 120px; /* Reduce la altura de los botones */
+        font-size: 1rem; /* Reduce el tamaño del texto en los botones */
+    }
+}
+
+@media (max-width: 480px) {
+    .acciones-container h2 {
+        font-size: 1.2rem; /* Reduce aún más el tamaño del texto en pantallas muy pequeñas */
+    }
+
+    .accion-button {
+        width: 120px; /* Reduce el ancho de los botones */
+        height: 100px; /* Reduce la altura de los botones */
+        font-size: 0.9rem; /* Reduce el tamaño del texto en los botones */
+    }
+}

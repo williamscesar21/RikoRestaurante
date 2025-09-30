@@ -1,0 +1,112 @@
+.mesa-container {
+    padding: 20px;
+    margin-top: 5vh;
+    max-width: 100%;
+    margin-left: 5%;
+}
+
+.mesa-container h1 {
+    margin-bottom: 20px;
+    color: #ffffff; /* Color del título en modo oscuro */
+}
+
+.mesa-form {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.mesa-form input {
+    padding: 15px;
+    flex: 1;
+    border: 1px solid #ccc; /* Borde claro para el input */
+    border-radius: 5px; /* Bordes redondeados */
+    background-color: #444; /* Fondo oscuro para el input */
+    color: #ffffff; /* Color del texto en el input */
+    max-width: 85%;
+}
+
+.mesa-form button {
+    padding: 15px 15px;
+    background-color: #007bff; /* Color de fondo del botón */
+    color: white; /* Color del texto del botón */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar el mouse */
+    transition: background-color 0.3s; /* Transición suave para el hover */
+    height: 80%;
+}
+
+.mesa-form button:hover {
+    background-color: #0056b3; /* Color más oscuro al pasar el mouse */
+}
+
+.mesa-list {
+    display: flex;
+    flex-wrap: wrap; /* Permite que las cards se ajusten en varias filas */
+    gap: 20px; /* Espacio entre las cards */
+    list-style-type: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.mesa-item {
+    flex: 1 1 300px; /* Ancho mínimo de 300px */
+    background-color: #2c2c2c; /* Fondo oscuro para las cards */
+    border: 1px solid #444; /* Borde gris oscuro */
+    border-radius: 15px; /* Aumentar el radio para más redondeo */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Sombra más pronunciada */
+    padding: 20px; /* Aumentar espaciado interno */
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    max-width: 100%; /* Ancho fijo para dar la apariencia de una mesa */
+}
+
+.mesa-item:hover {
+    transform: translateY(-5px);
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.mesa-libre {
+    border-color: green;
+    border-width: 2px; /* Borde más grueso */
+}
+  
+.mesa-ocupada {
+    border-color: yellow;
+    border-width: 2px; /* Borde más grueso */
+}
+
+.mesa-item button {
+    padding: 5px 10px;
+    color: red; /* Color del texto del botón */
+    border: none; /* Sin borde */
+    background: transparent; /* Fondo transparente */
+    cursor: pointer; /* Cambia el cursor al pasar el mouse */
+    transition: color 0.3s; /* Transición suave para el hover */
+}
+
+.mesa-item button:hover {
+    color: darkred; /* Color más oscuro al pasar el mouse */
+}
+
+.mesa-number{
+    font-size: 20px;
+    font-weight: bold;
+    background-color: #444;
+    padding: 10px;
+    border-radius: 25px;
+}
+
+.mesa-capacity{
+    font-size: 15px;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}

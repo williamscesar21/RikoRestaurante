@@ -1,0 +1,169 @@
+/* =============================================================== */
+/*  PALETA Y VARIABLES                                             */
+/* =============================================================== */
+:root {
+  --bg-main:        #FF7F00;
+  --bg-panel:       #ffa142;
+  --bg-card:        #ffffff;
+  --border:         #FF7F00;
+  --txt-primary:    #f3f4f6;
+  --txt-secondary:  #d1d5db;
+  --txt-accent:     #fb923c;
+  --txt-positive:   #22c55e;
+  --txt-negative:   #ef4444;
+  --txt-title:      #60a5fa;
+
+  --radius: .75rem;
+  --shadow: 0 6px 18px rgb(0 0 0 / .25);
+}
+
+/* =============================================================== */
+/*  CONTENEDOR GENERAL                                             */
+/* =============================================================== */
+.dashboard-container {
+  margin: 1.5rem auto;
+  padding: 2rem;
+  width: min(100%, 1240px);
+  background: var(--bg-panel);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  color: var(--txt-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* =============================================================== */
+/*  HEADER                                                         */
+/* =============================================================== */
+.dash-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.dash-header h2 {
+  margin: 0;
+  font-size: 1.75rem;
+  color: var(--txt-primary);
+}
+
+.dash-search {
+  flex: 1 1 240px;
+  padding: .5rem .875rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  color: var(--txt-secondary);
+}
+
+/* =============================================================== */
+/*  KPI CARDS                                                      */
+/* =============================================================== */
+.kpi-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 700px) {
+  .kpi-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.kpi {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  text-align: center;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.kpi:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgb(0 0 0 / .35);
+}
+
+.kpi h3 {
+  margin: 0 0 .5rem;
+  font-size: 1rem;
+  color: var(--txt-title);
+}
+
+.kpi-value {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.accent   { color: var(--txt-accent);   }
+.positive { color: var(--txt-positive); }
+.negative { color: var(--txt-negative); }
+
+/* =============================================================== */
+/*  CHART CARDS                                                    */
+/* =============================================================== */
+.chart-grid {
+  display: grid;
+  gap: 1.25rem;
+}
+
+@media (min-width: 960px) {
+  .chart-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.card-wide {
+  grid-column: 1 / -1; /* ocupa toda la fila en pantallas amplias */
+}
+
+.card-title {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--txt-title);
+}
+
+.pie-wrap {
+  position: relative;
+  height: 320px; /* espacio fijo para gráfico Pie */
+}
+
+/* =============================================================== */
+/*  GRÁFICOS                                                       */
+/* =============================================================== */
+.recharts-wrapper,
+canvas {
+  max-width: 100%;
+}
+
+/* =============================================================== */
+/*  ESTADO CARGANDO                                                */
+/* =============================================================== */
+.loading {
+  text-align: center;
+  color: var(--txt-primary);
+  font-size: 1.125rem;
+}
+
+/* Scrollbar sutil */
+.dashboard-container::-webkit-scrollbar {
+  width: 8px;
+}
+.dashboard-container::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}

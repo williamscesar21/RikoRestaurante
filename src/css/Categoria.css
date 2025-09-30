@@ -1,0 +1,78 @@
+.categoria-container {
+    padding: 20px;
+    margin-top: 5vh;
+    margin-left: 5%;
+}
+
+.categoria-container h1 {
+    margin-bottom: 20px;
+    color: #000000; /* Color del título en modo oscuro */
+}
+
+.categoria-form {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.categoria-form input {
+    padding: 15px;
+    flex: 1;
+    border: 1px solid #ccc; /* Borde claro para el input */
+    border-radius: 5px; /* Bordes redondeados */
+    background-color: #ffffff; /* Fondo oscuro para el input */
+    color: #000000; /* Color del texto en el input */
+    max-width: 85%;
+}
+
+.categoria-form button {
+    padding: 15px 15px;
+    background-color: #007bff; /* Color de fondo del botón */
+    color: white; /* Color del texto del botón */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar el mouse */
+    transition: background-color 0.3s; /* Transición suave para el hover */
+    height: 80%;
+}
+
+.categoria-form button:hover {
+    background-color: #0056b3; /* Color más oscuro al pasar el mouse */
+}
+
+.categoria-list {
+    display: flex;
+    flex-wrap: wrap; /* Permite que las cards se ajusten en varias filas */
+    gap: 20px; /* Espacio entre las cards */
+    list-style-type: none;
+    padding: 0;
+    margin-top: 20px;
+    width: 92.5%;
+}
+
+.categoria-item {
+    flex: 1 1 calc(25% - 20px); /* Cada card ocupa aproximadamente un 30% del ancho */
+    background-color: #2c2c2c; /* Fondo oscuro para las cards */
+    border: 1px solid #444; /* Borde gris oscuro */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Sombra sutil */
+    padding: 15px; /* Espaciado interno */
+    color: #ffffff; /* Color del texto claro */
+    display: flex; /* Flex para alinear el contenido */
+    justify-content: space-between; /* Espacio entre el texto y el botón */
+    align-items: center; /* Centrar verticalmente */
+}
+
+.categoria-item button {
+    padding: 5px 10px;
+    color: red; /* Color del texto del botón */
+    border: none; /* Sin borde */
+    background: transparent; /* Fondo transparente */
+    cursor: pointer; /* Cambia el cursor al pasar el mouse */
+    transition: color 0.3s; /* Transición suave para el hover */
+}
+
+.categoria-item button:hover {
+    color: darkred; /* Color más oscuro al pasar el mouse */
+}

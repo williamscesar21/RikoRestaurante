@@ -1,0 +1,107 @@
+/* Estilos generales del modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7); /* Fondo oscuro con opacidad */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Asegúrate de que el modal esté por encima de otros elementos */
+  }
+  
+  .modal-content {
+    background: rgb(255, 255, 255);
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%; /* Ancho del modal en dispositivos móviles */
+    max-width: 500px; /* Ancho máximo en pantallas grandes */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    overflow-y: auto; /* Permitir desplazamiento si el contenido es demasiado largo */
+    max-height: 80vh; /* Altura máxima del modal */
+  }
+  
+  /* Estilos para el campo de búsqueda */
+  .modal-content input[type="text"] {
+    width: 100%; /* Ancho completo */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  /* Estilos para la lista de clientes */
+  .modal-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 300px; /* Altura máxima de la lista */
+    overflow-y: auto; /* Permitir desplazamiento si hay muchos clientes */
+  }
+  
+  .modal-content li {
+    cursor: pointer;
+    padding: 10px;
+    border-bottom: 1px solid #eee; /* Línea divisoria entre elementos */
+
+  }
+  
+  .modal-content li:hover {
+    background: #414141; /* Color de fondo al pasar el mouse */
+  }
+  
+  /* Estilos para el botón de cerrar */
+  .modal-content button {
+    background: #007bff; /* Color de fondo del botón */
+    color: white; /* Color del texto */
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .modal-content button:hover {
+    background: #0056b3; /* Color de fondo al pasar el mouse */
+  }
+  
+  /* Media Queries para pantallas más pequeñas */
+  @media (max-width: 600px) {
+    .modal-content {
+      padding: 15px; /* Menos padding en pantallas pequeñas */
+    }
+  
+    .modal-content input[type="text"] {
+      padding: 8px; /* Menos padding en el campo de búsqueda */
+    }
+  
+    .modal-content button {
+      width: 100%; /* Botón de cerrar ocupa todo el ancho */
+    }
+  }
+
+  /* Estilos para la barra de desplazamiento */
+.modal-content ul::-webkit-scrollbar {
+    width: 8px; /* Ancho de la barra de desplazamiento */
+}
+
+.modal-content ul::-webkit-scrollbar-track {
+    background: rgb(39, 39, 39); /* Color del fondo de la barra de desplazamiento */
+}
+
+.modal-content ul::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3); /* Color de la parte que se desplaza */
+    border-radius: 4px; /* Bordes redondeados */
+}
+
+.modal-content ul::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5); /* Color al pasar el mouse */
+}
+
+/* Para navegadores que no son WebKit (Firefox) */
+.modal-content ul {
+    scrollbar-width: thin; /* Hacer la barra de desplazamiento más delgada */
+    scrollbar-color: rgba(255, 255, 255, 0.3) rgb(39, 39, 39); /* Color del thumb y del track */
+}

@@ -1,0 +1,154 @@
+/* Contenedor principal */
+.sesiones-container {
+    padding: 20px;
+    margin-top: 5vh;
+    margin-left: 5%;
+    border-radius: 8px;
+    color: #ffffff; /* Texto claro */
+    font-family: Arial, sans-serif;
+  }
+  
+  
+  /* Botones */
+  .sesion-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  .sesion-button.open {
+    background-color: #28a745; /* Verde */
+    color: white;
+  }
+  
+  .sesion-button.open:hover {
+    background-color: #218838; /* Verde oscuro */
+  }
+  
+  .sesion-button.close {
+    background-color: #dc3545; /* Rojo */
+    color: white;
+  }
+  
+  .sesion-button.close:hover {
+    background-color: #b30000; /* Rojo oscuro */
+  }
+  
+  /* Mensajes de error */
+  .error-message {
+    color: #ff0000; /* Rojo */
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  
+  /* Sesión abierta info */
+  .sesion-abierta {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: #c8c6c6; /* Gris claro */
+    text-align: center;
+  }
+
+  .sesion-id{
+    font-size: 16px;
+    background-color: #2c2c2c;
+    border: 1px solid #444; /* Borde gris oscuro */
+    border-radius: 8px;
+    padding: 10px 0px;
+    color: #c8c6c6;
+  }
+  
+  /* Lista de sesiones cerradas */
+  .sesiones-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px 0 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .sesiones-list-link {
+    background-color: #2c2c2c; /* Fondo oscuro */
+    border: 1px solid #444; /* Borde gris oscuro */
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Sombra sutil */
+    padding: 10px 15px;
+    color: #ffffff; /* Texto claro */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+    flex: 1 1 calc(25% - 20px); 
+    align-items: center;
+  }
+  
+  .sesiones-list li:hover {
+    transform: translateY(-5px);
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  
+  .sesiones-list li span {
+    font-size: 16px;
+    color: #c8c6c6; /* Gris claro */
+  }
+  
+  /* Botón de eliminar sesión */
+  .sesiones-list li button {
+    color: #ff0000; /* Rojo */
+    cursor: pointer;
+    font-size: large;
+    background-color: transparent;
+    border: none;
+  }
+  
+  .sesiones-list li button:hover {
+    color: #b30000; /* Rojo oscuro */
+  }
+  
+  /* Media Queries para Responsividad */
+  @media (max-width: 768px) {
+    .sesiones-container {
+      max-width: 90%; /* Reduce el ancho en pantallas más pequeñas */
+    }
+  
+    .sesiones-list li {
+      max-width: 100%; /* Ocupa todo el ancho del contenedor */
+    }
+  
+    .sesion-button {
+      font-size: 14px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .sesiones-container {
+      padding: 15px;
+    }
+  
+    .sesion-button {
+      font-size: 12px; /* Reduce el tamaño de fuente */
+      padding: 8px 15px; /* Ajusta el padding */
+    }
+  
+    .sesiones-list li {
+      padding: 10px; /* Reduce el padding interno */
+      font-size: 14px; /* Ajusta el tamaño del texto */
+    }
+  }
+  
+  .sesion-number{
+    font-size: 18px;
+    background-color: #444;
+    padding: 10px;
+    color: #c8c6c6;
+    width: fit-content;
+    border-radius: 25px;
+  }
