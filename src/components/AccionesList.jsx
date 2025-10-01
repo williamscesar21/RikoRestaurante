@@ -8,7 +8,7 @@ const AccionesList = () => {
       <div className="acciones-buttons">
         {/* Órdenes */}
         <Link to="/ordenes">
-          <button className="accion-button">Órdenes</button>
+          <button className="accion-button">Pedidos</button>
         </Link>
 
         {/* Productos y Categorías */}

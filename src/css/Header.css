@@ -16,12 +16,13 @@
 }
 
 /* Botón de menú */
-.menu-button {
+.header-container .menu-button {
   background: none;
   border: none;
   color: #FF7F00;
   font-size: 1.5rem;
   cursor: pointer;
+  margin-top: 10px;
 }
 
 .menu-button:hover {

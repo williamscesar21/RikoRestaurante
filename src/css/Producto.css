@@ -1,3 +1,6 @@
+/* ------------------------
+   Contenedor principal
+------------------------- */
 .producto-container {
     padding: 20px;
     margin-top: 5vh;
@@ -13,16 +16,56 @@
     margin-bottom: 20px;
 }
 
-.producto-container form {
+/* ------------------------
+   Botón toggle form
+------------------------- */
+.toggle-form-button {
+    background-color: #ff6a00;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 15px;
+    width: fit-content;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.toggle-form-button:hover {
+    background-color: #e65c00;
+}
+
+/* ------------------------
+   Animación del form
+------------------------- */
+.producto-form {
     background-color: #ffffff;
     border: 1px solid #e7e7e7;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 95%;
+
+    /* Animación */
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: scaleY(0.95);
+    transform-origin: top;
+    transition: max-height 0.5s ease, opacity 0.4s ease, transform 0.4s ease;
 }
 
-.producto-container form label {
+.producto-form.show {
+    max-height: 2000px; /* suficiente para todo el contenido */
+    opacity: 1;
+    transform: scaleY(1);
+}
+
+/* ------------------------
+   Inputs y labels
+------------------------- */
+.producto-form label {
     display: flex;
     flex-direction: column;
     font-size: 18px;
@@ -30,9 +73,9 @@
     margin-bottom: 10px;
 }
 
-.producto-container form input,
-.producto-container form textarea,
-.producto-container form select {
+.producto-form input,
+.producto-form textarea,
+.producto-form select {
     padding: 10px;
     margin-bottom: 20px;
     border: 1px solid #e7e7e7;
@@ -40,11 +83,11 @@
     font-size: 16px;
 }
 
-.producto-container form textarea {
+.producto-form textarea {
     height: 100px;
 }
 
-.producto-container form button {
+.producto-form button {
     background-color: #ff6a00;
     color: #fff;
     border: none;
@@ -53,12 +96,16 @@
     font-size: 16px;
     cursor: pointer;
     width: 100%;
+    transition: background-color 0.3s ease;
 }
 
-.producto-container form button:hover {
+.producto-form button:hover {
     background-color: #e65c00;
 }
 
+/* ------------------------
+   Tags
+------------------------- */
 .producto-container .tags-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -93,28 +140,9 @@
     display: none;
 }
 
-/* Estilo para el select de restaurantes (si lo necesitas en el futuro) */
-.restaurant-select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-color: #fff;
-    border: 1px solid #e7e7e7;
-    border-radius: 5px;
-    padding: 10px;
-    font-size: 16px;
-    width: 100%;
-    color: #333;
-    cursor: pointer;
-    position: relative;
-}
-
-.restaurant-select option {
-    padding: 10px;
-    font-size: 16px;
-}
-
-/* Estilos para carga de imágenes */
+/* ------------------------
+   Upload imágenes
+------------------------- */
 .image-upload-container {
     border: 2px dashed #e7e7e7;
     border-radius: 5px;

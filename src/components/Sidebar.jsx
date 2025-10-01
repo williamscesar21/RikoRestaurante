@@ -3,10 +3,7 @@ import { FaHome, FaClipboardList } from 'react-icons/fa';
 import { IoFastFood } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 import '../css/Sidebar.css';
-import { BiSolidCategory } from "react-icons/bi";
 import { FaUser } from "react-icons/fa";
-import { FaChalkboardUser } from "react-icons/fa6";
-import { MdTableRestaurant } from "react-icons/md";
 import { IoExitOutline } from "react-icons/io5";
 import ModalConfirmacion from './ModalConfirmacion';
 
@@ -59,7 +56,7 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
 
         <Link to="/ordenes" className="sidebar-link" onClick={isMobile ? toggleSidebar : null}>
           <li>
-            <FaClipboardList /> Órdenes
+            <FaClipboardList /> Pedidos
           </li>
         </Link>
 
@@ -69,36 +66,13 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
           </li>
         </Link>
 
-        <Link to="/categorias" className="sidebar-link" onClick={isMobile ? toggleSidebar : null}>
-          <li>
-            <BiSolidCategory /> Categorías
-          </li>
-        </Link>
-
         <Link to="/clientes" className="sidebar-link" onClick={isMobile ? toggleSidebar : null}>
           <li>
             <FaUser /> Clientes
           </li>
         </Link>
 
-        <Link to="/meseros" className="sidebar-link" onClick={isMobile ? toggleSidebar : null}>
-          <li>
-            <FaUser /> Meseros
-          </li>
-        </Link>
-
-        <Link to="/sesiones" className="sidebar-link" onClick={isMobile ? toggleSidebar : null}>
-          <li>
-            <FaChalkboardUser /> Sesiones
-          </li>
-        </Link>
-
-        <Link to="/mesas" className="sidebar-link" onClick={isMobile ? toggleSidebar : null}>
-          <li>
-            <MdTableRestaurant /> Mesas
-          </li>
-        </Link>
-
+        
         {/* Logout */}
         <Link to="#" className="sidebar-link" onClick={openModal}>
           <li>

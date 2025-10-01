@@ -11,6 +11,7 @@
     z-index: 1001;
     transition: transform 0.3s ease; /* Para transiciones suaves */
     transform: translateX(-100%); /* Por defecto, está oculto fuera de la pantalla */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil */
   }
   
   /* Cuando la sidebar está visible, cambiamos la propiedad transform */
@@ -53,6 +54,7 @@
   .sidebar-logo{
     padding: 10px;
     width: 50%;
+    margin-bottom: 10vh;
   }
   .sidebar-header{
     display: flex;
@@ -61,7 +63,23 @@
   }
 
   .sidebar-footer{
-    position: relative;
+    position: absolute;
+    bottom: 5vh;
+    width: 90%;
+  }
+
+  .sidebar .menu-button {
+    background: none;
+    border: none;
+    color: #FF7F00;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+
+  .menu-button:hover {
+    background-color: #FF7F00;
+    border-radius: 4px; /* Bordes redondeados para el hover */
+    color: #ffffff;
   }
   
   /* Responsive Styles: Cuando la pantalla sea pequeña, la sidebar debe colapsar */

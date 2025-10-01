@@ -18,6 +18,7 @@ const Producto = () => {
 
   const [imageFiles, setImageFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
+  const [showForm, setShowForm] = useState(false); // ✅ Estado para mostrar/ocultar el form
 
   const availableTags = [
     "Desayuno",
@@ -110,100 +111,112 @@ const Producto = () => {
 
   return (
     <div className="producto-container">
-      <h1>Agregar Producto</h1>
-      <form onSubmit={handleSubmit} className="producto-form">
-        <label>
-          Nombre:
-          <input
-            type="text"
-            name="nombre"
-            value={productData.nombre}
-            onChange={handleChange}
-            required
-          />
-        </label>
+      <h1>Gestión de Productos</h1>
 
-        <label>
-          Precio:
-          <input
-            type="number"
-            name="precio"
-            value={productData.precio}
-            onChange={handleChange}
-            required
-          />
-        </label>
+      {/* Botón que despliega el formulario */}
+      <button
+        className="toggle-form-button"
+        onClick={() => setShowForm(!showForm)}
+      >
+        {showForm ? "Cerrar Formulario" : "Agregar Producto"}
+      </button>
 
-        <label>
-          Descripción:
-          <textarea
-            name="descripcion"
-            value={productData.descripcion}
-            onChange={handleChange}
-            required
-          ></textarea>
-        </label>
+      {/* Formulario desplegable */}
+      {showForm && (
+        <form onSubmit={handleSubmit} className={`producto-form ${showForm ? "show" : ""}`}>
+          <label>
+            Nombre:
+            <input
+              type="text"
+              name="nombre"
+              value={productData.nombre}
+              onChange={handleChange}
+              required
+            />
+          </label>
 
-        <div className="tags-container">
-          <h3>Tags:</h3>
-          {availableTags.map((tag, index) => (
-            <label
-              key={index}
-              className={`tag-item ${
-                productData.tags.includes(tag) ? "selected" : ""
-              }`}
-              onClick={() => handleTagChange(tag)}
-            >
-              <input
-                type="checkbox"
-                value={tag}
-                checked={productData.tags.includes(tag)}
-                onChange={() => handleTagChange(tag)}
-              />
-              {tag}
-            </label>
-          ))}
-        </div>
+          <label>
+            Precio:
+            <input
+              type="number"
+              name="precio"
+              value={productData.precio}
+              onChange={handleChange}
+              required
+            />
+          </label>
 
-        <div
-          className="image-upload-container"
-          onDragOver={handleDragOver}
-          onDrop={handleDrop}
-        >
-          <input
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={(e) => handleImageChange(e.target.files)}
-            className="image-input"
-          />
-          <div className="upload-instructions">
-            Seleccione imágenes o arrastre aquí (máx. 3).
+          <label>
+            Descripción:
+            <textarea
+              name="descripcion"
+              value={productData.descripcion}
+              onChange={handleChange}
+              required
+            ></textarea>
+          </label>
+
+          <div className="tags-container">
+            <h3>Tags:</h3>
+            {availableTags.map((tag, index) => (
+              <label
+                key={index}
+                className={`tag-item ${
+                  productData.tags.includes(tag) ? "selected" : ""
+                }`}
+                onClick={() => handleTagChange(tag)}
+              >
+                <input
+                  type="checkbox"
+                  value={tag}
+                  checked={productData.tags.includes(tag)}
+                  onChange={() => handleTagChange(tag)}
+                />
+                {tag}
+              </label>
+            ))}
           </div>
 
-          {imagePreviews.length > 0 && (
-            <div className="image-preview-container">
-              {imagePreviews.map((preview, index) => (
-                <div className="image-preview-wrapper" key={index}>
-                  <span
-                    className="delete-image-button"
-                    onClick={() => handleImageRemove(index)}
-                  >
-                    ✕
-                  </span>
-                  <img
-                    src={preview}
-                    alt={`Preview ${index}`}
-                    className="image-preview"
-                  />
-                </div>
-              ))}
+          <div
+            className="image-upload-container"
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+          >
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={(e) => handleImageChange(e.target.files)}
+              className="image-input"
+            />
+            <div className="upload-instructions">
+              Seleccione imágenes o arrastre aquí (máx. 3).
             </div>
-          )}
-        </div>
 
-        <button type="submit">Agregar Producto</button>
-      </form>
+            {imagePreviews.length > 0 && (
+              <div className="image-preview-container">
+                {imagePreviews.map((preview, index) => (
+                  <div className="image-preview-wrapper" key={index}>
+                    <span
+                      className="delete-image-button"
+                      onClick={() => handleImageRemove(index)}
+                    >
+                      ✕
+                    </span>
+                    <img
+                      src={preview}
+                      alt={`Preview ${index}`}
+                      className="image-preview"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <button type="submit">Guardar Producto</button>
+        </form>
+      )}
     </div>
   );
 };

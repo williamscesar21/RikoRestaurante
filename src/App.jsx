@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import Home from './components/Home';
@@ -20,62 +20,52 @@ function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
-  // ✅ Solo verificamos si hay token en localStorage
   const token = localStorage.getItem('token');
   const isAuthenticated = !!token;
+
+  const [swStatus, setSwStatus] = useState("Esperando...");
+
+  useEffect(() => {
+    console.log("🔍 useEffect montado, verificando ServiceWorker...");
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("/firebase-messaging-sw.js", { scope: "/", updateViaCache: "none" })
+        .then((registration) => {
+          console.log("✅ SW registrado correctamente:", registration);
+          setSwStatus("Registrado OK");
+        })
+        .catch((err) => {
+          console.error("❌ Error registrando SW:", err);
+          setSwStatus("Error: " + err.message);
+        });
+    } else {
+      console.warn("⚠️ Este navegador no soporta serviceWorker");
+      setSwStatus("No soportado");
+    }
+  }, []);
+
 
   return (
     <BrowserRouter>
       <div className="container">
-        {/* Header siempre visible */}
-        { isAuthenticated && <Header toggleSidebar={toggleSidebar} />}
-
-        {/* Sidebar solo si está autenticado */}
+        {isAuthenticated && <Header toggleSidebar={toggleSidebar} />}
         {isAuthenticated && (
           <Sidebar sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
         )}
-
         <div className={`main-content ${sidebarOpen ? 'shifted' : ''}`}>
           <Routes>
-            {/* Rutas públicas */}
             <Route path="/login" element={<Login />} />
             <Route path="/mesas" element={<Mesa />} />
             <Route path="/mesas/:mesaId" element={<MesaScreen />} />
             <Route path="/ordenes/:orderId" element={<OrdenScreen />} />
-
-            {/* Rutas protegidas → solo validamos si está logueado */}
-            <Route
-              path="/"
-              element={isAuthenticated ? <Home /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/categorias"
-              element={isAuthenticated ? <Categoria /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/productos"
-              element={isAuthenticated ? <Producto /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/clientes"
-              element={isAuthenticated ? <Cliente /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/meseros"
-              element={isAuthenticated ? <Mesero /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/ordenes"
-              element={isAuthenticated ? <Ordenes /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/sesiones"
-              element={isAuthenticated ? <Sesiones /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/sesion/:id"
-              element={isAuthenticated ? <SesionScreen /> : <Navigate to="/login" />}
-            />
+            <Route path="/" element={isAuthenticated ? <Home /> : <Navigate to="/login" />} />
+            <Route path="/categorias" element={isAuthenticated ? <Categoria /> : <Navigate to="/login" />} />
+            <Route path="/productos" element={isAuthenticated ? <Producto /> : <Navigate to="/login" />} />
+            <Route path="/clientes" element={isAuthenticated ? <Cliente /> : <Navigate to="/login" />} />
+            <Route path="/meseros" element={isAuthenticated ? <Mesero /> : <Navigate to="/login" />} />
+            <Route path="/ordenes" element={isAuthenticated ? <Ordenes /> : <Navigate to="/login" />} />
+            <Route path="/sesiones" element={isAuthenticated ? <Sesiones /> : <Navigate to="/login" />} />
+            <Route path="/sesion/:id" element={isAuthenticated ? <SesionScreen /> : <Navigate to="/login" />} />
           </Routes>
         </div>
       </div>

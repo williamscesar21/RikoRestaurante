@@ -4,16 +4,15 @@ import { IoFastFood } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 import '../css/Header.css';
 import { MdTableRestaurant } from "react-icons/md";
-import { api_base_url } from '../../../ipconfig';
 
 const Header = ({ toggleSidebar }) => {
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    // Verificar la conexión al backend
+    // Verificar la conexión al backend con un endpoint real
     const checkConnection = async () => {
       try {
-        const response = await fetch(`${api_base_url}/`);
+        const response = await fetch(`https://rikoapi.onrender.com/api/restaurant/restaurants`);
         setIsConnected(response.ok);
       } catch (error) {
         setIsConnected(false);
@@ -21,18 +20,18 @@ const Header = ({ toggleSidebar }) => {
     };
 
     checkConnection();
-    const interval = setInterval(checkConnection, 5000); // Verifica cada 5 segundos
+    const interval = setInterval(checkConnection, 5000); // Verifica cada 5s
     return () => clearInterval(interval);
   }, []);
 
   return (
     <header className="header-container">
-      {/* Botón para abrir/cerrar el menú lateral */}
+      {/* Botón menú lateral */}
       <button className="menu-button" onClick={toggleSidebar}>
         ☰
       </button>
 
-      {/* Íconos fijos en el Header */}
+      {/* Íconos navegación */}
       <div className="header-icons">
         <Link to="/" className="header-link">
           <FaHome />
@@ -48,7 +47,7 @@ const Header = ({ toggleSidebar }) => {
         </Link>
       </div>
 
-      {/* Estado de conexión al backend */}
+      {/* Estado conexión */}
       <h1
         className="restaurant-name"
         style={{
