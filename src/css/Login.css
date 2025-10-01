@@ -13,7 +13,7 @@ body {
 .login-container {
   width: 100vw;
   height: 100%;
-  background-image: url('patternriko.jpg');
+  background-image: url('https://firebasestorage.googleapis.com/v0/b/rikoweb-ff259.appspot.com/o/patternriko.jpg?alt=media&token=f6dda0e7-2125-44bf-86de-ee9f45ab1994');
   background-size: cover;
   background-position: center;
   padding: 0;
