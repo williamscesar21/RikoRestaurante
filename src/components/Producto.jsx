@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebase";
 import "../css/Producto.css";
 
+// 📌 Importar Toastify (notificaciones internas)
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const Producto = () => {
-  const restaurantId = localStorage.getItem("restaurantId"); // ✅ ID del restaurante logueado
+  const restaurantId = localStorage.getItem("restaurantId");
 
   const [productData, setProductData] = useState({
     nombre: "",
@@ -18,7 +22,7 @@ const Producto = () => {
 
   const [imageFiles, setImageFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
-  const [showForm, setShowForm] = useState(false); // ✅ Estado para mostrar/ocultar el form
+  const [showForm, setShowForm] = useState(false);
 
   const availableTags = [
     "Desayuno",
@@ -41,7 +45,7 @@ const Producto = () => {
 
   const handleImageChange = (files) => {
     if (files.length > 3 || imageFiles.length + files.length > 3) {
-      alert("Solo se pueden agregar hasta 3 imágenes.");
+      toast.error("❌ Solo se pueden agregar hasta 3 imágenes.");
       return;
     }
 
@@ -63,7 +67,10 @@ const Producto = () => {
       if (tagExists) {
         newTags = prevData.tags.filter((t) => t !== tag);
       } else {
-        if (prevData.tags.length >= 3) return prevData; // máx 3 tags
+        if (prevData.tags.length >= 3) {
+          toast.warning("⚠️ Solo se permiten 3 tags máximo.");
+          return prevData;
+        }
         newTags = [...prevData.tags, tag];
       }
 
@@ -75,7 +82,6 @@ const Producto = () => {
     e.preventDefault();
 
     try {
-      // ✅ Subir imágenes a Firebase
       const imageUrls = await Promise.all(
         imageFiles.map(async (file) => {
           const storageRef = ref(storage, `products/${file.name}`);
@@ -84,17 +90,21 @@ const Producto = () => {
         })
       );
 
-      // ✅ Guardar producto en la API
       await axios.post("https://rikoapi.onrender.com/api/product/product", {
         ...productData,
         images: imageUrls,
       });
 
-      alert("✅ Producto agregado con éxito");
-      window.location.reload();
+      toast.success("✅ Producto agregado con éxito");
+
+      // ✅ También enviamos una notificación push local
+      mostrarNotificacionPush("✅ Producto agregado", "Se guardó correctamente en el sistema");
+
+      setTimeout(() => window.location.reload(), 1500);
     } catch (error) {
       console.error("Error al agregar producto:", error);
-      alert("❌ Error al agregar producto");
+      toast.error("❌ Error al agregar producto");
+      mostrarNotificacionPush("❌ Error", "Hubo un problema al guardar el producto");
     }
   };
 
@@ -109,9 +119,44 @@ const Producto = () => {
     setImageFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
+  // ✅ Notificación local interna (Toastify)
+  const mostrarNotificacionToast = () => {
+    toast.info("🔔 Probando notificación Toastify 🚀");
+  };
+
+  // ✅ Notificación push real del navegador
+  const mostrarNotificacionPush = async (titulo = "🔔 Notificación", mensaje = "Esto es un push local") => {
+    if (!("Notification" in window)) {
+      toast.error("Tu navegador no soporta notificaciones push");
+      return;
+    }
+
+    let permiso = Notification.permission;
+
+    if (permiso !== "granted") {
+      permiso = await Notification.requestPermission();
+    }
+
+    if (permiso === "granted") {
+      new Notification(titulo, {
+        body: mensaje,
+        icon: "/logoNaranja.png", // opcional
+      });
+    } else {
+      toast.warning("⚠️ No se concedió permiso para notificaciones");
+    }
+  };
+
   return (
     <div className="producto-container">
       <h1>Gestión de Productos</h1>
+
+      {/* Botón de prueba Toastify */}
+      <button onClick={mostrarNotificacionToast} className="toggle-form-button">
+        Notificación Toastify
+      </button>
+
+     
 
       {/* Botón que despliega el formulario */}
       <button
@@ -121,7 +166,6 @@ const Producto = () => {
         {showForm ? "Cerrar Formulario" : "Agregar Producto"}
       </button>
 
-      {/* Formulario desplegable */}
       {showForm && (
         <form onSubmit={handleSubmit} className={`producto-form ${showForm ? "show" : ""}`}>
           <label>
@@ -161,9 +205,7 @@ const Producto = () => {
             {availableTags.map((tag, index) => (
               <label
                 key={index}
-                className={`tag-item ${
-                  productData.tags.includes(tag) ? "selected" : ""
-                }`}
+                className={`tag-item ${productData.tags.includes(tag) ? "selected" : ""}`}
                 onClick={() => handleTagChange(tag)}
               >
                 <input
@@ -217,6 +259,9 @@ const Producto = () => {
           <button type="submit">Guardar Producto</button>
         </form>
       )}
+
+      {/* Contenedor de notificaciones */}
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };
