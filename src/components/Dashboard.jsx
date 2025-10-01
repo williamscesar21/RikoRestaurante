@@ -20,7 +20,6 @@ import {
 import { Pie } from 'react-chartjs-2';
 
 import '../css/Dashboard.css';        // estilos que ves debajo
-import { api_base_url } from '../../../ipconfig'; // tu endpoint base
 
 // Registrar sólo una vez los elementos de Chart.js
 ChartJS.register(ArcElement, ChartTooltip, ChartLegend);
@@ -39,6 +38,7 @@ export default function Dashboard() {
     total_vuelto: 0,
   });
   const [loading, setLoading] = useState(true);
+  const api_base_url = 'https://api.rikorestaurante.com';
 
   /* ----------------------------- FETCH -------------------------------- */
   useEffect(() => {
