@@ -267,3 +267,65 @@ h6{
   text-align: left;
   align-self: flex-start;
 }
+
+/* 🔘 Contenedor de botones de pago */
+.payment-actions {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 12px;
+  background: #f9f9f9;
+  border-top: 1px solid #ddd;
+  gap: 10px;
+}
+
+/* ❌ Botón de Pago no recibido */
+.reject-btn {
+  flex: 1;
+  padding: 10px 15px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+.reject-btn:hover {
+  background-color: #e03c3c;
+}
+
+.reject-btn:disabled {
+  background-color: #ffb3b3;
+  cursor: not-allowed;
+}
+
+/* ✅ Botón de Pago confirmado */
+.confirm-btn {
+  flex: 1;
+  padding: 10px 15px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+.confirm-btn:hover {
+  background-color: #218838;
+}
+
+.confirm-btn:disabled {
+  background-color: #9ee2b0;
+  cursor: not-allowed;
+}
+
+.message p {
+  white-space: pre-line; /* respeta \n y los muestra como saltos */
+  margin: 0; /* opcional, elimina margen extra */
+}

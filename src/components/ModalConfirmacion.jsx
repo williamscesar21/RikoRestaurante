@@ -1,7 +1,7 @@
 import React from 'react';
 import '../css/ModalConfirmacion.css'; // Asegúrate de crear un archivo CSS para el modal
 
-const ModalConfirmacion = ({ isOpen, onClose, onConfirm, message }) => {
+const ModalConfirmacion = ({ isOpen, onClose, onConfirm, message, concept }) => {
   if (!isOpen) return null;
 
   return (
@@ -9,6 +9,7 @@ const ModalConfirmacion = ({ isOpen, onClose, onConfirm, message }) => {
       <div className="modal-content">
         <h3>Confirmación</h3>
         <p>{message}</p>
+        <h5>{concept}</h5>
         <div className="modal-buttons">
           <button onClick={onConfirm} className="modal-button confirm">Sí</button>
           <button onClick={onClose} className="modal-button cancel">No</button>

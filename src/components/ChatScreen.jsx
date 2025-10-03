@@ -3,6 +3,8 @@ import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import "../css/ChatScreen.css";
 import { ArrowLeft } from "react-feather";
 import { CiImageOn } from "react-icons/ci";
+import axios from "axios";
+import ModalConfirmacion from "./ModalConfirmacion";
 
 import { db, storage } from "../firebase";
 import {
@@ -23,6 +25,12 @@ const ChatScreen = () => {
   const [showModal, setShowModal] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
+  const [pedidoEstado, setPedidoEstado] = useState(null); // estado del pedido
+  const [pagoRechazado, setPagoRechazado] = useState(false); // flag cuando se rechaza pago
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   const messagesEndRef = useRef(null);
 
   // 👇 Abrir modal si viene del state o query param
@@ -35,6 +43,13 @@ const ChatScreen = () => {
     }
   }, [searchParams]);
 
+  //Enviar mensaje al darle enter en el input
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSendMessage();
+    }
+  };
+
   // 🔄 Escuchar mensajes en tiempo real
   useEffect(() => {
     if (!orderId) return;
@@ -42,12 +57,28 @@ const ChatScreen = () => {
     return () => unsubscribe();
   }, [orderId]);
 
-  // 🔽 Auto-scroll al último mensaje cada vez que cambian los mensajes
+  // 🔽 Auto-scroll
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
+
+  // 📡 Obtener estado del pedido
+  useEffect(() => {
+    const fetchPedido = async () => {
+      try {
+        const { data } = await axios.get(
+          `https://rikoapi.onrender.com/api/pedido/pedidos/${orderId}`
+        );
+        setPedidoEstado(data.estado); // aquí depende de cómo venga el JSON
+      } catch (error) {
+        console.error("❌ Error obteniendo pedido:", error);
+      }
+    };
+
+    if (orderId) fetchPedido();
+  }, [orderId]);
 
   // ➡️ Enviar mensaje de texto
   const handleSendMessage = async () => {
@@ -68,6 +99,33 @@ const ChatScreen = () => {
       console.error("❌ Error subiendo archivo:", error);
     } finally {
       setIsUploading(false);
+    }
+  };
+
+  // ✅ Confirmar pago
+  const handleConfirmarPago = async () => {
+       try {
+      await axios.put(
+        `https://rikoapi.onrender.com/api/pedido/pedidos/${orderId}/confirmar_pago`
+      );
+
+      // mandar mensaje al chat
+      await sendMessage(db, orderId, "restaurant", "✅ Pago confirmado");
+      closeModal();
+
+      setPedidoEstado("confirmado");
+    } catch (error) {
+      console.error("❌ Error confirmando pago:", error);
+    }
+  };
+
+  // ❌ Rechazar pago
+  const handleRechazarPago = async () => {
+    try {
+      await sendMessage(db, orderId, "restaurant", "❌ Pago no recibido");
+      setPagoRechazado(true);
+    } catch (error) {
+      console.error("❌ Error rechazando pago:", error);
     }
   };
 
@@ -122,25 +180,46 @@ const ChatScreen = () => {
             </span>
           </div>
         ))}
-        {/* marcador invisible para hacer scroll */}
         <div ref={messagesEndRef} />
       </div>
 
-      {/* INPUT */}
-      <div className="input-container">
-        <input
-          type="text"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Escribe un mensaje al cliente..."
-        />
-        <button className="upload-btn" onClick={() => setShowModal(true)}>
-          <CiImageOn />
-        </button>
-        <button className="send-btn" onClick={handleSendMessage}>
-          Enviar
-        </button>
-      </div>
+      {/* 📌 BOTONES PAGO vs INPUT */}
+      {pedidoEstado === "Confirmando pago" ? (
+        <div className="payment-actions">
+            <button
+              className="reject-btn"
+              onClick={handleRechazarPago}
+              disabled={isUploading}
+            >
+               Pago no recibido
+            </button>
+          <button
+            className="confirm-btn"
+            onClick={openModal}
+            disabled={isUploading}
+          >
+            Pago confirmado
+          </button>
+        </div>
+      ) : (
+        // INPUT NORMAL
+        <div className="input-container">
+          <input
+            type="text"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            placeholder="Escribe un mensaje al cliente..."
+            onKeyPress={handleKeyPress}
+            disabled={isUploading || pagoRechazado}
+          />
+          <button className="upload-btn" onClick={() => setShowModal(true)}>
+            <CiImageOn />
+          </button>
+          <button className="send-btn" onClick={handleSendMessage}>
+            Enviar
+          </button>
+        </div>
+      )}
 
       {/* MODAL ARCHIVO */}
       {showModal && (
@@ -182,6 +261,13 @@ const ChatScreen = () => {
           </div>
         </div>
       )}
+      <ModalConfirmacion
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onConfirm={handleConfirmarPago}
+        message="¿Estás seguro de que deseas confirmar el pago?"
+        concept="Una vez el pago sea confirmado, no podrás revertir esta acción."
+      />
     </div>
   );
 };

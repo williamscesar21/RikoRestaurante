@@ -1,4 +1,3 @@
-// 📦 Firebase
 import {
   collection,
   query,
@@ -8,14 +7,9 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
-import {
-  ref,
-  uploadBytes,
-  getDownloadURL,
-} from "firebase/storage";
-
-
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { auth } from "../firebase";
+import imageCompression from "browser-image-compression";
 
 // ==============================================
 // ⏰ Formatear tiempo
@@ -43,9 +37,8 @@ export const formatTime = (timestamp) => {
   });
 };
 
-
 // ==============================================
-// 📡 Escuchar mensajes en tiempo real
+// 📡 Escuchar mensajes en tiempo real (chat activo)
 // ==============================================
 export const listenToMessages = (db, orderId, callback, notify = true) => {
   const q = query(
@@ -54,24 +47,60 @@ export const listenToMessages = (db, orderId, callback, notify = true) => {
   );
 
   return onSnapshot(q, (snapshot) => {
-    const fetchedMessages = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    snapshot.docChanges().forEach((change) => {
+      if (change.type === "added") {
+        const newMsg = { id: change.doc.id, ...change.doc.data() };
+        callback((prev) => [...prev, newMsg]);
 
-    callback(fetchedMessages);
-
-    if (notify && fetchedMessages.length > 0) {
-      const lastMsg = fetchedMessages[fetchedMessages.length - 1];
-      if (lastMsg.senderId !== auth.currentUser?.uid) {
-        triggerNotification(lastMsg);
+        if (notify && newMsg.senderId !== auth.currentUser?.uid) {
+          triggerNotification(newMsg);
+        }
       }
-    }
+    });
   });
 };
 
 // ==============================================
-// ✉️ Enviar mensaje de texto
+// 🔔 Notificación Web
+// ==============================================
+const triggerNotification = (msg) => {
+  if ("Notification" in window && Notification.permission === "granted") {
+    new Notification("Nuevo mensaje 📩", {
+      body: msg.type === "text" ? msg.content : "Te enviaron un archivo",
+      icon: "/logoNaranja.png",
+    });
+  }
+};
+
+// 🔔 Notificación web + toast + sonido
+const triggerToastNotification = (msg, orderId) => {
+  if (!msg || !msg.content) return;
+
+  let body =
+    msg.type === "text"
+      ? msg.content
+      : msg.type === "image"
+      ? "📷 Imagen enviada"
+      : "📍 Ubicación compartida";
+
+  // Mostrar notificación toast
+  import("react-toastify").then(({ toast }) => {
+    toast.info(`💬 Nuevo mensaje en pedido #${orderId}: ${body}`, {
+      autoClose: 3000,
+    });
+  });
+
+  // 🔊 Intentar reproducir sonido
+  const audio = new Audio("/notify.mp3");
+  audio.volume = 1.0;
+  audio.play().catch((err) => {
+    console.warn("⚠️ El navegador bloqueó el autoplay del sonido:", err);
+  });
+};
+
+
+// ==============================================
+// ✉️ Enviar texto
 // ==============================================
 export const sendMessage = async (db, orderId, senderType, content) => {
   if (!auth.currentUser || !content.trim()) return;
@@ -85,23 +114,35 @@ export const sendMessage = async (db, orderId, senderType, content) => {
 };
 
 // ==============================================
-// 📎 Enviar archivo (comprobante, imagen, etc.)
+// 📎 Enviar archivo (comprimido antes de subir)
 // ==============================================
 export const sendFile = async (storage, db, orderId, file, senderType) => {
   if (!file || !auth.currentUser) return;
 
-  const storageRef = ref(storage, `chat-files/${orderId}/${file.name}`);
-  await uploadBytes(storageRef, file);
-  const imageUrl = await getDownloadURL(storageRef);
+  try {
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1280,
+      useWebWorker: true,
+    };
 
-  await addDoc(collection(db, "RikoChat", orderId, "messages"), {
-    senderId: auth.currentUser.uid,
-    senderType,
-    content: "Archivo enviado",
-    type: "image",
-    imageUrl,
-    timestamp: serverTimestamp(),
-  });
+    const compressedFile = await imageCompression(file, options);
+
+    const storageRef = ref(storage, `chat-files/${orderId}/${compressedFile.name}`);
+    await uploadBytes(storageRef, compressedFile);
+    const imageUrl = await getDownloadURL(storageRef);
+
+    await addDoc(collection(db, "RikoChat", orderId, "messages"), {
+      senderId: auth.currentUser.uid,
+      senderType,
+      content: "Archivo enviado",
+      type: "image",
+      imageUrl,
+      timestamp: serverTimestamp(),
+    });
+  } catch (error) {
+    console.error("❌ Error subiendo archivo:", error);
+  }
 };
 
 // ==============================================
@@ -118,3 +159,50 @@ export const sendLocation = async (db, orderId, senderType, coords) => {
     timestamp: serverTimestamp(),
   });
 };
+
+export const listenToAllOrdersMessages = (db, orderIds, activeOrderId = null) => {
+  const unsubscribes = [];
+  const seenMessages = new Set(); // ⚡ Evitar duplicados
+
+  orderIds.forEach((orderId) => {
+    const q = query(
+      collection(db, "RikoChat", orderId, "messages"),
+      orderBy("timestamp", "asc")
+    );
+
+    let firstLoad = true;
+
+    const unsub = onSnapshot(q, (snapshot) => {
+      // Ignorar primera carga (mensajes viejos)
+      if (firstLoad) {
+        firstLoad = false;
+        return;
+      }
+
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          const msg = { id: change.doc.id, ...change.doc.data() };
+
+          // ⚡ Evitar duplicados
+          if (seenMessages.has(msg.id)) return;
+          seenMessages.add(msg.id);
+
+          // ⚡ Ignorar si estoy en el chat activo
+          if (orderId === activeOrderId) return;
+
+          // ⚡ Ignorar si el mensaje lo mandé yo
+          if (msg.senderId === auth.currentUser?.uid) return;
+
+          // ✅ Notificar SOLO mensajes nuevos
+          triggerToastNotification(msg, orderId);
+        }
+      });
+    });
+
+    unsubscribes.push(unsub);
+  });
+
+  // Devuelve función para limpiar TODOS los listeners
+  return () => unsubscribes.forEach((u) => u());
+};
+
