@@ -12,7 +12,7 @@ import {
   formatTime,
 } from "../utils/ChatUtilities";
 
-const ChatScreenRestaurant = () => {
+const ChatScreen = () => {
   const { orderId } = useParams();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -41,6 +41,13 @@ const ChatScreenRestaurant = () => {
     const unsubscribe = listenToMessages(db, orderId, setMessages, true);
     return () => unsubscribe();
   }, [orderId]);
+
+  // 🔽 Auto-scroll al último mensaje cada vez que cambian los mensajes
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   // ➡️ Enviar mensaje de texto
   const handleSendMessage = async () => {
@@ -115,6 +122,7 @@ const ChatScreenRestaurant = () => {
             </span>
           </div>
         ))}
+        {/* marcador invisible para hacer scroll */}
         <div ref={messagesEndRef} />
       </div>
 
@@ -178,4 +186,4 @@ const ChatScreenRestaurant = () => {
   );
 };
 
-export default ChatScreenRestaurant;
+export default ChatScreen;
