@@ -9,6 +9,7 @@ import Sidebar from "./components/Sidebar";
 import Producto from "./components/Producto";
 import Ordenes from "./components/Ordenes";
 import Login from "./components/Login";
+import ChatScreen from "./components/ChatScreen";
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -78,6 +79,12 @@ function App() {
               path="/ordenes"
               element={
                 isAuthenticated ? <Ordenes /> : <Navigate to="/login" />
+              }
+            />
+            <Route
+              path="/chat/:orderId"
+              element={
+                isAuthenticated ? <ChatScreen /> : <Navigate to="/login" />
               }
             />
           </Routes>

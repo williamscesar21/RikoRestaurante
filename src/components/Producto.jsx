@@ -119,10 +119,6 @@ const Producto = () => {
     setImageFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // ✅ Notificación local interna (Toastify)
-  const mostrarNotificacionToast = () => {
-    toast.info("🔔 Probando notificación Toastify 🚀");
-  };
 
   // ✅ Notificación push real del navegador
   const mostrarNotificacionPush = async (titulo = "🔔 Notificación", mensaje = "Esto es un push local") => {
@@ -151,14 +147,7 @@ const Producto = () => {
     <div className="producto-container">
       <h1>Gestión de Productos</h1>
 
-      {/* Botón de prueba Toastify */}
-      <button onClick={mostrarNotificacionToast} className="toggle-form-button">
-        Notificación Toastify
-      </button>
-
-     
-
-      {/* Botón que despliega el formulario */}
+        {/* Botón que despliega el formulario */}
       <button
         className="toggle-form-button"
         onClick={() => setShowForm(!showForm)}
