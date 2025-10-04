@@ -7,32 +7,31 @@ import { BiChat } from 'react-icons/bi';
 const Ordenes = () => {
   const [pedidos, setPedidos] = useState([]);
   const [loading, setLoading] = useState(true);
-  const restaurantId = localStorage.getItem('restaurantId'); // ✅ usamos restaurante
+  const [filtroEstado, setFiltroEstado] = useState("Todos");
+  const restaurantId = localStorage.getItem('restaurantId'); 
   const navigate = useNavigate();
 
   const prioridadEstado = {
+    'Confirmando pago': 0,
     'Pendiente': 1,
     'En preparación': 2,
     'En camino a entregar': 3,
+    'Esperando confirmación del cliente': 3.5, // 👈 nuevo intermedio
     'Entregado': 4,
     'Cancelado': 5,
     'Rechazado': 6,
   };
 
   const estadoLabels = {
-  "Confirmando pago": "Confirma el Pago",
-  "Pendiente": "Pendiente",
-  "En preparación": "Preparando",
-  "En camino a recoger": "Repartidor en camino al restaurante",
-  "En camino a entregar": "Pedido en camino",
-  "Entregado": "Entregado",
-  "Cancelado": "Cancelado",
-  "Rechazado": "Rechazado",
-};
+    "Confirmando pago": "Confirma el pago",
+    "Pendiente": "Pendiente",
+    "En preparación": "Preparando",
+    "En camino a entregar": "En camino",
+    "Esperando confirmación del cliente": "Esperando confirmación", // 👈 label nuevo
+    "Entregado": "Entregado"
+  };
 
-  const map = { 'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u', ' ': '-' };
-  const normalizarClaseEstado = (estado) =>
-    estado.toLowerCase().replace(/[áéíóúÁÉÍÓÚ ]/g, (c) => map[c] || '');
+  const estadosDisponibles = ["Todos", ...Object.keys(estadoLabels)];
 
   const fetchPedidos = async () => {
     if (!restaurantId) {
@@ -43,24 +42,54 @@ const Ordenes = () => {
       const { data } = await axios.get(
         `https://rikoapi.onrender.com/api/pedido/pedidos/restaurante/${restaurantId}`
       );
-      setPedidos(data);
+
+      // 🔍 mapear pedidos para detectar el estado intermedio
+      const pedidosProcesados = data.map(p => {
+        if (
+          p.estado === "En camino a entregar" &&
+          p.confirmado_por_repartidor === true &&
+          p.confirmado_por_cliente === false
+        ) {
+          return { ...p, estado: "Esperando confirmación del cliente" };
+        }
+        return p;
+      });
+
+      setPedidos(pedidosProcesados);
     } catch (error) {
-      console.error('Error al obtener pedidos:', error);
+      console.error('❌ Error al obtener pedidos:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const cambiarEstadoPedido = async (idPedido, nuevoEstado) => {
+  const aceptarPedido = async (idPedido) => {
+    try {
+      await axios.put(`https://rikoapi.onrender.com/api/pedido/pedidos/${idPedido}/aceptar`);
+      fetchPedidos();
+    } catch (error) {
+      console.error('❌ Error al aceptar pedido:', error);
+    }
+  };
+
+  const confirmarRecogida = async (idPedido) => {
+    try {
+      await axios.put(`https://rikoapi.onrender.com/api/pedido/pedidos/${idPedido}/recogido`);
+      fetchPedidos();
+    } catch (error) {
+      console.error('❌ Error al confirmar recogida:', error);
+    }
+  };
+
+  const confirmarEntrega = async (idPedido) => {
     try {
       await axios.put(
-        `https://rikoapi.onrender.com/api/pedido/pedidos/${idPedido}/estado`,
-        { estado: nuevoEstado }
+        `https://rikoapi.onrender.com/api/pedido/pedidos/${idPedido}/entregado`,
+        { quien_confirma: "repartidor" }
       );
       fetchPedidos();
     } catch (error) {
-      console.error('Error al actualizar estado:', error);
-      alert('No se pudo actualizar el pedido');
+      console.error("❌ Error al confirmar entrega:", error);
     }
   };
 
@@ -70,39 +99,56 @@ const Ordenes = () => {
     return () => clearInterval(interval);
   }, [restaurantId]);
 
-  if (!restaurantId) return <div className="empty-text">Restaurante no autenticado</div>;
-  if (loading) return <div className="loading-text">Cargando pedidos...</div>;
-  if (pedidos.length === 0) return <div className="empty-text">No tienes pedidos</div>;
+  // 📌 Filtrar pedidos
+  const pedidosFiltrados = filtroEstado === "Todos"
+    ? pedidos
+    : pedidos.filter(p => p.estado === filtroEstado);
+
+  if (loading) return <div className="ordenes-container"><h1>Gestión de Pedidos</h1><p>Cargando pedidos...</p></div>;
+  if (!restaurantId) return <div className="ordenes-container"><h1>Gestión de Pedidos</h1><p>ID de restaurante no encontrado.</p></div>;
+  if (pedidos.length === 0) return <div className="ordenes-container"><h1>Gestión de Pedidos</h1><p>No hay pedidos disponibles.</p></div>;
 
   return (
     <div className="ordenes-container">
       <h1>Gestión de Pedidos</h1>
 
+      {/* 📌 Filtros tipo tabs */}
+      <div className="filtros-tabs">
+        {estadosDisponibles.map((estado) => (
+          <button
+            key={estado}
+            className={`filtro-btn ${filtroEstado === estado ? "activo" : ""}`}
+            onClick={() => setFiltroEstado(estado)}
+          >
+            {estadoLabels[estado] || estado}
+          </button>
+        ))}
+      </div>
+
       <div className="ordenes-list">
-        {[...pedidos]
+        {[...pedidosFiltrados]
           .sort((a, b) => prioridadEstado[a.estado] - prioridadEstado[b.estado])
           .map((pedido) => (
             <div key={pedido._id} className="orden-card animate-in">
               {/* HEADER */}
               <div className="pedido-header">
                 <span className="orden-id">#{pedido._id.slice(-6)}</span>
-                
-                <span className={`orden-estado estado-${normalizarClaseEstado(pedido.estado)}`}>
-                 {estadoLabels[pedido.estado] || pedido.estado}
+                <span className={`orden-estado estado-${pedido.estado.replace(/\s+/g, "-").toLowerCase()}`}>
+                  {estadoLabels[pedido.estado] || pedido.estado}
                 </span>
                 <p
-                    className="orden-chat-button"
-                    onClick={() => navigate(`/chat/${pedido._id}`)}
-                  >
-                    <BiChat /> Chat
+                  className="orden-chat-button"
+                  onClick={() => navigate(`/chat/${pedido._id}`)}
+                >
+                  <BiChat /> Chat
                 </p>
               </div>
 
               {/* INFO */}
               <div className="orden-body">
-                <p className="orden-cliente"><strong>Cliente:</strong> {pedido.id_cliente?.nombre} {pedido.id_cliente?.apellido}</p>
-                <p className="orden-total"><strong>Total:</strong> ${pedido.total.toFixed(2)}</p>
-                <p className="orden-direccion">
+                <p><strong>Cliente:</strong> {pedido.id_cliente?.nombre} {pedido.id_cliente?.apellido}</p>
+                <p><strong>Total:</strong> ${pedido.total.toFixed(2)}</p>
+                <p>
                   <strong>Dirección: </strong>
                   <a
                     href={`https://www.google.com/maps?q=${pedido.direccion_de_entrega}`}
@@ -112,7 +158,7 @@ const Ordenes = () => {
                     {pedido.direccion_de_entrega}
                   </a>
                 </p>
-                <p className="orden-fecha"><strong>Fecha:</strong> {new Date(pedido.createdAt).toLocaleString()}</p>
+                <p><strong>Fecha:</strong> {new Date(pedido.createdAt).toLocaleString()}</p>
               </div>
 
               {/* PRODUCTOS */}
@@ -124,11 +170,9 @@ const Ordenes = () => {
                       alt={detalle.id_producto?.nombre}
                     />
                     <div>
-                      <p className="producto-nombre">{detalle.id_producto?.nombre}</p>
-                      <p className="producto-cantidad">x{detalle.cantidad}</p>
-                      <p className="producto-subtotal">
-                        ${(detalle.id_producto?.precio * detalle.cantidad).toFixed(2)}
-                      </p>
+                      <p>{detalle.id_producto?.nombre}</p>
+                      <p>x{detalle.cantidad}</p>
+                      <p>${(detalle.id_producto?.precio * detalle.cantidad).toFixed(2)}</p>
                     </div>
                   </div>
                 ))}
@@ -137,18 +181,26 @@ const Ordenes = () => {
               {/* BOTONES */}
               <div className="orden-actions">
                 {pedido.estado === 'Pendiente' && (
-                  <>
-                    <button className="btn-aceptar" onClick={() => cambiarEstadoPedido(pedido._id, 'En preparación')}>Aceptar</button>
-                    <button className="btn-cancelar" onClick={() => cambiarEstadoPedido(pedido._id, 'Cancelado')}>Cancelar</button>
-                  </>
+                  <button className="btn-aceptar" onClick={() => aceptarPedido(pedido._id)}>
+                    Preparar
+                  </button>
                 )}
+
                 {pedido.estado === 'En preparación' && (
-                  <button className="btn-enviar" onClick={() => cambiarEstadoPedido(pedido._id, 'En camino a entregar')}>Enviar</button>
+                  <button className="btn-enviar" onClick={() => confirmarRecogida(pedido._id)}>
+                    En camino
+                  </button>
                 )}
-                {pedido.estado === 'En camino a entregar' && (
-                  <button className="btn-entregado" onClick={() => cambiarEstadoPedido(pedido._id, 'Entregado')}>Marcar Entregado</button>
+
+                {/* Solo mostrar si está en entrega y el repartidor no ha confirmado */}
+                {(pedido.estado === 'En camino a entregar' || pedido.estado === 'Esperando confirmación del cliente') &&
+                  !pedido.confirmado_por_repartidor && (
+                    <button className="btn-entregado" onClick={() => confirmarEntrega(pedido._id)}>
+                      Confirmar Entregado
+                    </button>
                 )}
               </div>
+
             </div>
           ))}
       </div>
