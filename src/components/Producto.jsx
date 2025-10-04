@@ -1,10 +1,12 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storage } from "../firebase";
+import React, { useState, useEffect } from "react";
 import "../css/Producto.css";
+import {
+  fetchProductos,
+  submitProducto,
+  toggleSuspender,
+  availableTags,
+} from "../utils/ProductoUtilities";
 
-// 📌 Importar Toastify (notificaciones internas)
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -23,17 +25,19 @@ const Producto = () => {
   const [imageFiles, setImageFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [productos, setProductos] = useState([]);
 
-  const availableTags = [
-    "Desayuno",
-    "Almuerzo",
-    "Cena",
-    "Bebida",
-    "Postre",
-    "Comida Rapida",
-    "Comida Gourmet",
-    "Nutricional",
-  ];
+  // 🔍 Estados para filtros
+  const [filtroTag, setFiltroTag] = useState("Todos");
+  const [filtroPrecio, setFiltroPrecio] = useState("Todos");
+  const [busqueda, setBusqueda] = useState("");
+
+  // 📌 Cargar productos
+  useEffect(() => {
+    if (restaurantId) {
+      fetchProductos(restaurantId, setProductos);
+    }
+  }, [restaurantId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -80,74 +84,34 @@ const Producto = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      const imageUrls = await Promise.all(
-        imageFiles.map(async (file) => {
-          const storageRef = ref(storage, `products/${file.name}`);
-          await uploadBytes(storageRef, file);
-          return getDownloadURL(storageRef);
-        })
-      );
-
-      await axios.post("https://rikoapi.onrender.com/api/product/product", {
-        ...productData,
-        images: imageUrls,
-      });
-
-      toast.success("✅ Producto agregado con éxito");
-
-      // ✅ También enviamos una notificación push local
-      mostrarNotificacionPush("✅ Producto agregado", "Se guardó correctamente en el sistema");
-
-      setTimeout(() => window.location.reload(), 1500);
-    } catch (error) {
-      console.error("Error al agregar producto:", error);
-      toast.error("❌ Error al agregar producto");
-      mostrarNotificacionPush("❌ Error", "Hubo un problema al guardar el producto");
-    }
+    await submitProducto(productData, imageFiles);
   };
 
-  const handleDragOver = (e) => e.preventDefault();
-  const handleDrop = (e) => {
-    e.preventDefault();
-    handleImageChange(e.dataTransfer.files);
-  };
-
-  const handleImageRemove = (index) => {
-    setImagePreviews((prev) => prev.filter((_, i) => i !== index));
-    setImageFiles((prev) => prev.filter((_, i) => i !== index));
-  };
-
-
-  // ✅ Notificación push real del navegador
-  const mostrarNotificacionPush = async (titulo = "🔔 Notificación", mensaje = "Esto es un push local") => {
-    if (!("Notification" in window)) {
-      toast.error("Tu navegador no soporta notificaciones push");
-      return;
-    }
-
-    let permiso = Notification.permission;
-
-    if (permiso !== "granted") {
-      permiso = await Notification.requestPermission();
-    }
-
-    if (permiso === "granted") {
-      new Notification(titulo, {
-        body: mensaje,
-        icon: "/logoNaranja.png", // opcional
-      });
-    } else {
-      toast.warning("⚠️ No se concedió permiso para notificaciones");
-    }
-  };
+  // 📌 Aplicar filtros
+  const productosFiltrados = productos
+    .filter((prod) =>
+      filtroTag === "Todos" ? true : prod.tags?.includes(filtroTag)
+    )
+    .filter((prod) => {
+      if (filtroPrecio === "Todos") return true;
+      const precio = prod.precio;
+      if (filtroPrecio === "<5") return precio < 5;
+      if (filtroPrecio === "5-10") return precio >= 5 && precio <= 10;
+      if (filtroPrecio === "10-20") return precio > 10 && precio <= 20;
+      if (filtroPrecio === ">20") return precio > 20;
+      return true;
+    })
+    .filter(
+      (prod) =>
+        prod.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
+        prod.descripcion.toLowerCase().includes(busqueda.toLowerCase())
+    );
 
   return (
     <div className="producto-container">
       <h1>Gestión de Productos</h1>
 
-        {/* Botón que despliega el formulario */}
+      {/* Botón que despliega el formulario */}
       <button
         className="toggle-form-button"
         onClick={() => setShowForm(!showForm)}
@@ -156,7 +120,10 @@ const Producto = () => {
       </button>
 
       {showForm && (
-        <form onSubmit={handleSubmit} className={`producto-form ${showForm ? "show" : ""}`}>
+        <form
+          onSubmit={handleSubmit}
+          className={`producto-form ${showForm ? "show" : ""}`}
+        >
           <label>
             Nombre:
             <input
@@ -194,7 +161,9 @@ const Producto = () => {
             {availableTags.map((tag, index) => (
               <label
                 key={index}
-                className={`tag-item ${productData.tags.includes(tag) ? "selected" : ""}`}
+                className={`tag-item ${
+                  productData.tags.includes(tag) ? "selected" : ""
+                }`}
                 onClick={() => handleTagChange(tag)}
               >
                 <input
@@ -208,11 +177,7 @@ const Producto = () => {
             ))}
           </div>
 
-          <div
-            className="image-upload-container"
-            onDragOver={handleDragOver}
-            onDrop={handleDrop}
-          >
+          <div className="image-upload-container">
             <input
               type="file"
               accept="image/*"
@@ -230,7 +195,14 @@ const Producto = () => {
                   <div className="image-preview-wrapper" key={index}>
                     <span
                       className="delete-image-button"
-                      onClick={() => handleImageRemove(index)}
+                      onClick={() => {
+                        setImagePreviews((prev) =>
+                          prev.filter((_, i) => i !== index)
+                        );
+                        setImageFiles((prev) =>
+                          prev.filter((_, i) => i !== index)
+                        );
+                      }}
                     >
                       ✕
                     </span>
@@ -249,7 +221,93 @@ const Producto = () => {
         </form>
       )}
 
-      {/* Contenedor de notificaciones */}
+      {/* 📌 Filtros */}
+      <div className="filtros-container">
+        <h3>Filtrar por categoría:</h3>
+        <div className="filtros-tags">
+          {["Todos", ...availableTags].map((tag) => (
+            <button
+              key={tag}
+              className={`filtro-btn ${filtroTag === tag ? "activo" : ""}`}
+              onClick={() => setFiltroTag(tag)}
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
+
+        <h3>Filtrar por precio:</h3>
+        <div className="filtros-precio">
+          {["Todos", "<5", "5-10", "10-20", ">20"].map((rango) => (
+            <button
+              key={rango}
+              className={`filtro-btn ${filtroPrecio === rango ? "activo" : ""}`}
+              onClick={() => setFiltroPrecio(rango)}
+            >
+              {rango === "Todos"
+                ? "Todos"
+                : rango === "<5"
+                ? "Menos de $5"
+                : rango === "5-10"
+                ? "$5 a $10"
+                : rango === "10-20"
+                ? "$10 a $20"
+                : "Más de $20"}
+            </button>
+          ))}
+        </div>
+
+        <h3>Buscar producto:</h3>
+        <input
+          type="text"
+          placeholder="Buscar por nombre o descripción..."
+          value={busqueda}
+          onChange={(e) => setBusqueda(e.target.value)}
+          className="buscador-input"
+        />
+      </div>
+
+      {/* 📌 Listado de productos estilo cards */}
+      <div className="productos-list">
+        {productosFiltrados.length === 0 ? (
+          <p className="empty-text">No se encontraron productos</p>
+        ) : (
+          productosFiltrados.map((prod) => (
+            <div key={prod._id} className="producto-card">
+              <img
+                src={prod.images?.[0] || "/default-product.png"}
+                alt={prod.nombre}
+                className="producto-card-img"
+              />
+              <div className="producto-card-body">
+                <h3>{prod.nombre}</h3>
+                <p>{prod.descripcion}</p>
+                <p>
+                  <strong>${prod.precio.toFixed(2)}</strong>
+                </p>
+                <div className="tags-list">
+                  {prod.tags?.map((tag, i) => (
+                    <span key={i} className="tag">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <button
+                  className={`suspender-btn ${prod.suspendido ? "off" : "on"}`}
+                  onClick={() =>
+                    toggleSuspender(prod._id, () =>
+                      fetchProductos(restaurantId, setProductos)
+                    )
+                  }
+                >
+                  {prod.suspendido ? "Suspendido" : "Activo"}
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
       <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );

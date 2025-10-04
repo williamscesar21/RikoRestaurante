@@ -212,3 +212,115 @@
     align-items: center;
     justify-content: center;
 }
+
+.productos-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.producto-card {
+  position: relative;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: transform 0.2s;
+  padding-bottom: 5vh;
+}
+
+.producto-card:hover {
+  transform: translateY(-4px);
+}
+
+.producto-card-img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.producto-card-body {
+  padding: 12px;
+}
+
+.producto-card-body h3 {
+  margin: 0 0 8px;
+}
+
+.tags-list {
+  margin-top: 6px;
+}
+
+.tag {
+  display: inline-block;
+  background: #ff6a0076;
+  color: #333;
+  padding: 2px 8px;
+  margin: 2px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.suspender-btn {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  margin-top: 10px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.suspender-btn.on {
+  background: #28a745;
+  color: #fff;
+}
+
+.suspender-btn.off {
+  background: #5e5e5e;
+  color: #fff;
+}
+
+.filtros-container {
+  margin: 20px 0;
+  padding: 15px;
+  border-radius: 10px;
+  background: #fafafa;
+}
+
+.filtros-tags,
+.filtros-precio {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.filtro-btn {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filtro-btn:hover {
+  background: #f0f0f0;
+}
+
+.filtro-btn.activo {
+  background: #ff6600;
+  color: white;
+  border-color: #ff6600;
+}
+
+.buscador-input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
