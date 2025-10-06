@@ -3,7 +3,7 @@
 /* =============================================================== */
 :root {
   --bg-main:        #FF7F00;
-  --bg-panel:       #ffa142;
+  --bg-panel:       #ff8000;
   --bg-card:        #ffffff;
   --border:         #FF7F00;
   --txt-primary:    #f3f4f6;
@@ -23,6 +23,7 @@
 .dashboard-container {
   margin: 1.5rem auto;
   padding: 2rem;
+  margin-top: 10vh;
   width: min(100%, 1240px);
   background: var(--bg-panel);
   border-radius: var(--radius);

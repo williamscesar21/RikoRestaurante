@@ -15,9 +15,6 @@ const AccionesList = () => {
         <Link to="/productos">
           <button className="accion-button">Productos</button>
         </Link>
-        <Link to="/categorias">
-          <button className="accion-button">Categorías</button>
-        </Link>
 
         {/* Clientes */}
         <Link to="/clientes">

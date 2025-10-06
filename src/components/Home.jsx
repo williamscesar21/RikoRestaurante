@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import '../css/Home.css'; // Archivo CSS para el estilo
-import AccionesList from './AccionesList'; // Importamos el nuevo componente
-import Dashboard from './Dashboard';
+import '../css/Home.css';
+import AccionesList from './AccionesList'; 
 
 const Home = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -27,7 +26,6 @@ const Home = () => {
         <p className="home-subtitle">¿En qué deseas trabajar hoy?</p>
         <AccionesList />
       </div>
-      <Dashboard />
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FaHome, FaClipboardList } from 'react-icons/fa';
+import { MdQueryStats } from "react-icons/md";
 import { IoFastFood } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 import '../css/Sidebar.css';
@@ -69,6 +70,11 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
         <Link to="/clientes" className="sidebar-link" onClick={isMobile ? toggleSidebar : null}>
           <li>
             <FaUser /> Clientes
+          </li>
+        </Link>
+        <Link to="/statistics" className="sidebar-link" onClick={isMobile ? toggleSidebar : null}>
+          <li>
+            <MdQueryStats /> Estadísticas
           </li>
         </Link>
 

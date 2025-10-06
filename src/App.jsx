@@ -10,6 +10,8 @@ import Producto from "./components/Producto";
 import Ordenes from "./components/Ordenes";
 import Login from "./components/Login";
 import ChatScreen from "./components/ChatScreen";
+import Clientes from "./components/Clientes";
+import Dashboard from "./components/Dashboard";
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -79,6 +81,18 @@ function App() {
               path="/ordenes"
               element={
                 isAuthenticated ? <Ordenes /> : <Navigate to="/login" />
+              }
+            />
+            <Route
+              path="/clientes"
+              element={
+                isAuthenticated ? <Clientes /> : <Navigate to="/login" />
+              }
+            />
+            <Route
+              path="/statistics"
+              element={
+                isAuthenticated ? <Dashboard /> : <Navigate to="/login" />
               }
             />
             <Route

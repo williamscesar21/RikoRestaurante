@@ -3,7 +3,6 @@ import { FaHome, FaClipboardList } from 'react-icons/fa';
 import { IoFastFood } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 import '../css/Header.css';
-import { MdTableRestaurant } from "react-icons/md";
 
 const Header = ({ toggleSidebar }) => {
   const [isConnected, setIsConnected] = useState(false);
@@ -41,9 +40,6 @@ const Header = ({ toggleSidebar }) => {
         </Link>
         <Link to="/ordenes" className="header-link">
           <FaClipboardList />
-        </Link>
-        <Link to="/mesas" className="header-link">
-          <MdTableRestaurant />
         </Link>
       </div>
 
