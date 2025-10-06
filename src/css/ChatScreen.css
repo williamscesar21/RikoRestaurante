@@ -329,3 +329,37 @@ h6{
   white-space: pre-line; /* respeta \n y los muestra como saltos */
   margin: 0; /* opcional, elimina margen extra */
 }
+
+.chat-image {
+  width: 180px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.chat-image:hover {
+  transform: scale(1.02);
+}
+
+.image-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999999;
+  cursor: zoom-out;
+}
+
+.image-modal {
+  max-width: 90%;
+  max-height: 85%;
+  border-radius: 10px;
+  transition: transform 0.15s ease;
+  cursor: grab;
+}
+
+.image-modal:active {
+  cursor: grabbing;
+}

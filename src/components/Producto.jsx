@@ -9,9 +9,11 @@ import {
 
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 const Producto = () => {
   const restaurantId = localStorage.getItem("restaurantId");
+  const navigate = useNavigate();
 
   const [productData, setProductData] = useState({
     nombre: "",
@@ -273,15 +275,18 @@ const Producto = () => {
           <p className="empty-text">No se encontraron productos</p>
         ) : (
           productosFiltrados.map((prod) => (
+            //el click no debe afectar al boton de suspender
             <div key={prod._id} className="producto-card">
               <img
                 src={prod.images?.[0] || "/default-product.png"}
                 alt={prod.nombre}
                 className="producto-card-img"
+                onClick={() => navigate(`/producto/${prod._id}`)}
+                style={{ cursor: "pointer" }}
               />
               <div className="producto-card-body">
                 <h3>{prod.nombre}</h3>
-                <p>{prod.descripcion}</p>
+                <p>{prod.descripcion.split(" ").slice(0, 10).join(" ")}...</p>
                 <p>
                   <strong>${prod.precio.toFixed(2)}</strong>
                 </p>

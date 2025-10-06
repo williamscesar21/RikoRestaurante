@@ -25,13 +25,17 @@ const ChatScreen = () => {
   const [showModal, setShowModal] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
-  const [pedidoEstado, setPedidoEstado] = useState(null); // estado del pedido
-  const [pagoRechazado, setPagoRechazado] = useState(false); // flag cuando se rechaza pago
+  const [pedidoEstado, setPedidoEstado] = useState(null);
+  const [pagoRechazado, setPagoRechazado] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+
+  const [selectedImage, setSelectedImage] = useState(null); // 🖼️ para ver imagen
+  const [zoom, setZoom] = useState(1);
 
   const messagesEndRef = useRef(null);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   // 👇 Abrir modal si viene del state o query param
   useEffect(() => {
@@ -43,14 +47,7 @@ const ChatScreen = () => {
     }
   }, [searchParams]);
 
-  //Enviar mensaje al darle enter en el input
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      handleSendMessage();
-    }
-  };
-
-  // 🔄 Escuchar mensajes en tiempo real
+  // 🔄 Escuchar mensajes
   useEffect(() => {
     if (!orderId) return;
     const unsubscribe = listenToMessages(db, orderId, setMessages, true);
@@ -64,25 +61,24 @@ const ChatScreen = () => {
     }
   }, [messages]);
 
-  // 📡 Obtener estado del pedido
+  // 📡 Estado del pedido
   useEffect(() => {
     const fetchPedido = async () => {
       try {
         const { data } = await axios.get(
           `https://rikoapi.onrender.com/api/pedido/pedidos/${orderId}`
         );
-        setPedidoEstado(data.estado); // aquí depende de cómo venga el JSON
+        setPedidoEstado(data.estado);
       } catch (error) {
         console.error("❌ Error obteniendo pedido:", error);
       }
     };
-
     if (orderId) fetchPedido();
   }, [orderId]);
 
-  // ➡️ Enviar mensaje de texto
+  // ➡️ Enviar mensaje
   const handleSendMessage = async () => {
-    if (!orderId) return;
+    if (!orderId || !newMessage.trim()) return;
     await sendMessage(db, orderId, "restaurant", newMessage);
     setNewMessage("");
   };
@@ -104,15 +100,12 @@ const ChatScreen = () => {
 
   // ✅ Confirmar pago
   const handleConfirmarPago = async () => {
-       try {
+    try {
       await axios.put(
         `https://rikoapi.onrender.com/api/pedido/pedidos/${orderId}/confirmar_pago`
       );
-
-      // mandar mensaje al chat
       await sendMessage(db, orderId, "restaurant", "✅ Pago confirmado");
       closeModal();
-
       setPedidoEstado("confirmado");
     } catch (error) {
       console.error("❌ Error confirmando pago:", error);
@@ -128,6 +121,20 @@ const ChatScreen = () => {
       console.error("❌ Error rechazando pago:", error);
     }
   };
+
+  // 🖼️ Modal imagen con zoom
+  const handleWheelZoom = (e) => {
+    e.preventDefault();
+    const newZoom = zoom + e.deltaY * -0.0015;
+    setZoom(Math.min(Math.max(1, newZoom), 3)); // entre 1x y 3x
+  };
+
+  // Cerrar modal con Esc
+  useEffect(() => {
+    const closeOnEsc = (e) => e.key === "Escape" && setSelectedImage(null);
+    window.addEventListener("keydown", closeOnEsc);
+    return () => window.removeEventListener("keydown", closeOnEsc);
+  }, []);
 
   return (
     <div className="chat-screen-container">
@@ -155,7 +162,15 @@ const ChatScreen = () => {
             >
               {msg.type === "text" && <p>{msg.content}</p>}
               {msg.type === "image" && (
-                <img src={msg.imageUrl} alt="Archivo" />
+                <img
+                  src={msg.imageUrl}
+                  alt="Archivo"
+                  className="chat-image"
+                  onClick={() => {
+                    setSelectedImage(msg.imageUrl);
+                    setZoom(1);
+                  }}
+                />
               )}
               {msg.type === "location" && (
                 <div className="location-message">
@@ -183,16 +198,16 @@ const ChatScreen = () => {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* 📌 BOTONES PAGO vs INPUT */}
+      {/* 📌 BOTONES DE PAGO O INPUT */}
       {pedidoEstado === "Confirmando pago" ? (
         <div className="payment-actions">
-            <button
-              className="reject-btn"
-              onClick={handleRechazarPago}
-              disabled={isUploading}
-            >
-               Pago no recibido
-            </button>
+          <button
+            className="reject-btn"
+            onClick={handleRechazarPago}
+            disabled={isUploading}
+          >
+            Pago no recibido
+          </button>
           <button
             className="confirm-btn"
             onClick={openModal}
@@ -202,14 +217,13 @@ const ChatScreen = () => {
           </button>
         </div>
       ) : (
-        // INPUT NORMAL
         <div className="input-container">
           <input
             type="text"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="Escribe un mensaje al cliente..."
-            onKeyPress={handleKeyPress}
+            placeholder="Escribe un mensaje..."
+            onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
             disabled={isUploading || pagoRechazado}
           />
           <button className="upload-btn" onClick={() => setShowModal(true)}>
@@ -261,12 +275,29 @@ const ChatScreen = () => {
           </div>
         </div>
       )}
+
+      {/* 🖼️ MODAL DE IMAGEN CON ZOOM */}
+      {selectedImage && (
+        <div
+          className="image-modal-overlay"
+          onClick={() => setSelectedImage(null)}
+        >
+          <img
+            src={selectedImage}
+            alt="zoom"
+            className="image-modal"
+            style={{ transform: `scale(${zoom})` }}
+            onWheel={handleWheelZoom}
+          />
+        </div>
+      )}
+
       <ModalConfirmacion
         isOpen={isModalOpen}
         onClose={closeModal}
         onConfirm={handleConfirmarPago}
-        message="¿Estás seguro de que deseas confirmar el pago?"
-        concept="Una vez el pago sea confirmado, no podrás revertir esta acción."
+        message="¿Estás seguro de confirmar el pago?"
+        concept="Una vez confirmado, no podrás revertir esta acción."
       />
     </div>
   );

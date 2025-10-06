@@ -12,6 +12,7 @@ import Login from "./components/Login";
 import ChatScreen from "./components/ChatScreen";
 import Clientes from "./components/Clientes";
 import Dashboard from "./components/Dashboard";
+import ProductScreen from "./components/ProductScreen";
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -99,6 +100,12 @@ function App() {
               path="/chat/:orderId"
               element={
                 isAuthenticated ? <ChatScreen /> : <Navigate to="/login" />
+              }
+            />
+            <Route
+              path="/producto/:id"
+              element={
+                isAuthenticated ? <ProductScreen /> : <Navigate to="/login" />
               }
             />
           </Routes>
