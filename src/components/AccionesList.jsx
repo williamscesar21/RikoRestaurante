@@ -21,10 +21,9 @@ const AccionesList = () => {
           <button className="accion-button">Clientes</button>
         </Link>
 
-        {/* Sesiones de venta (si lo quieres visible también) */}
-        {/* <Link to="/sesiones">
-          <button className="accion-button">Sesiones</button>
-        </Link> */}
+        <Link to="/statistics">
+          <button className="accion-button">Estadísticas</button>
+        </Link>
       </div>
     </div>
   );
