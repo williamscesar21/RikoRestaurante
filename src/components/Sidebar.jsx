@@ -7,6 +7,7 @@ import '../css/Sidebar.css';
 import { FaUser } from "react-icons/fa";
 import { IoExitOutline } from "react-icons/io5";
 import ModalConfirmacion from './ModalConfirmacion';
+import { MdManageAccounts } from "react-icons/md";
 
 const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
   const [isMobile, setIsMobile] = useState(false);
@@ -75,6 +76,11 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
         <Link to="/statistics" className="sidebar-link" onClick={isMobile ? toggleSidebar : null}>
           <li>
             <MdQueryStats /> Estadísticas
+          </li>
+        </Link>
+        <Link to="/rest-account" className="sidebar-link" onClick={isMobile ? toggleSidebar : null}>
+          <li>
+            <MdManageAccounts /> Config.
           </li>
         </Link>
 
