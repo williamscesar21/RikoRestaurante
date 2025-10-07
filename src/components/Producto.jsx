@@ -259,7 +259,7 @@ const Producto = () => {
           ))}
         </div>
 
-        <h3>Buscar producto:</h3>
+       
         <input
           type="text"
           placeholder="Buscar por nombre o descripción..."
