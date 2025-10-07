@@ -12,6 +12,7 @@ import { MdManageAccounts } from "react-icons/md";
 const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const restaurantId = localStorage.getItem('restaurantId');
 
   // Detectar tamaño de la ventana
   useEffect(() => {
@@ -78,7 +79,7 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
             <MdQueryStats /> Estadísticas
           </li>
         </Link>
-        <Link to="/rest-account" className="sidebar-link" onClick={isMobile ? toggleSidebar : null}>
+        <Link to={`/restaurant/${restaurantId}`} className="sidebar-link" onClick={isMobile ? toggleSidebar : null}>
           <li>
             <MdManageAccounts /> Config.
           </li>

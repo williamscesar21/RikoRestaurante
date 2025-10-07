@@ -1,0 +1,168 @@
+.account-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 25px;
+  font-family: "Poppins", sans-serif;
+  color: #222;
+  margin-top: 5vh;
+}
+
+.loading-screen {
+  text-align: center;
+  margin-top: 20vh;
+  color: #555;
+}
+
+.account-header {
+  display: flex;
+  gap: 20px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.account-image {
+  width: 140px;
+  height: 140px;
+  position: relative;
+}
+.account-image img {
+  width: 140px;
+  height: 140px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+.placeholder-image {
+  width: 140px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: #f3f4f6;
+  border: 1px dashed #ccc;
+}
+
+.account-info {
+  flex: 1;
+}
+
+.account-name {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.account-name-input {
+  border: none;
+  border-bottom: 2px solid #ccc;
+  font-size: 1.5rem;
+  outline: none;
+}
+
+.account-description {
+  width: 100%;
+  min-height: 70px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 6px;
+}
+
+.account-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-edit,
+.btn-save,
+.btn-cancel {
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 8px;
+  color: #fff;
+}
+.btn-edit {
+  background: #6366f1;
+}
+.btn-save {
+  background: #22c55e;
+}
+.btn-cancel {
+  background: #ef4444;
+}
+
+.account-details,
+.account-schedule,
+.account-pm,
+.account-password {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  margin-top: 25px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+.schedule-table th,
+.schedule-table td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+.schedule-range {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.add-range {
+  margin-top: 5px;
+  background: #f3f4f6;
+  border: 1px dashed #999;
+  border-radius: 6px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+.remove-range {
+  border: none;
+  background: transparent;
+  color: #dc2626;
+  cursor: pointer;
+}
+
+/* Pago Móvil */
+.pm-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+.pm-grid label {
+  font-weight: 500;
+  color: #444;
+}
+.pm-grid input {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 6px;
+}
+
+/* Contraseña */
+.account-password input {
+  border: 1px solid #ddd;
+  padding: 8px;
+  border-radius: 6px;
+  width: 220px;
+  margin-right: 10px;
+}
+.account-password button {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}

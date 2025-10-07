@@ -13,6 +13,7 @@ import ChatScreen from "./components/ChatScreen";
 import Clientes from "./components/Clientes";
 import Dashboard from "./components/Dashboard";
 import ProductScreen from "./components/ProductScreen";
+import RestaurantAccount from "./components/RestaurantAccount";
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -106,6 +107,12 @@ function App() {
               path="/producto/:id"
               element={
                 isAuthenticated ? <ProductScreen /> : <Navigate to="/login" />
+              }
+            />
+            <Route
+              path="/restaurant/:id"
+              element={
+                isAuthenticated ? <RestaurantAccount /> : <Navigate to="/login" />
               }
             />
           </Routes>
