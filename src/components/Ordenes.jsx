@@ -162,7 +162,7 @@ const Ordenes = () => {
     return (
       <div className="ordenes-container">
         <h1>Gestión de Pedidos</h1>
-        <p>Cargando pedidos...</p>
+        <p className="loading">Cargando pedidos...</p>
       </div>
     );
 

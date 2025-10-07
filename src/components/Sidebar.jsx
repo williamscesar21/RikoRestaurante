@@ -47,7 +47,7 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
       </button>
 
       <div className="sidebar-header">
-        <img src="logoNaranja.png" alt="Logo" className="sidebar-logo" />
+        <img src="https://firebasestorage.googleapis.com/v0/b/rikoweb-ff259.appspot.com/o/logoNaranja.png?alt=media&token=ec6b041d-dc9a-435e-9dcf-5bce33198179" alt="Logo" className="sidebar-logo" />
       </div>
 
       <ul>

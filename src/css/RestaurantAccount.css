@@ -1,168 +1,308 @@
-.account-container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 25px;
-  font-family: "Poppins", sans-serif;
-  color: #222;
-  margin-top: 5vh;
-}
-
-.loading-screen {
-  text-align: center;
-  margin-top: 20vh;
-  color: #555;
-}
-
-.account-header {
+/* =========================
+   🔹 ESTILO GENERAL
+   ========================= */
+.restaurant-screen-container {
   display: flex;
-  gap: 20px;
-  background: #fff;
-  padding: 20px;
-  border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  justify-content: center;
+  min-height: 100vh;
+  padding: 40px 20px;
+  font-family: 'Poppins', sans-serif;
+  margin-top: 5vh;
+  background-color: #fff;
 }
 
-.account-image {
-  width: 140px;
-  height: 140px;
-  position: relative;
+.restaurant-screen-info {
+  background: #ffffff;
+  width: 100%;
+  overflow: hidden;
 }
-.account-image img {
-  width: 140px;
-  height: 140px;
-  border-radius: 12px;
+
+/* =========================
+   🔹 IMAGEN SUPERIOR
+   ========================= */
+.restaurant-img {
+  width: 100%;
+  height: 260px;
   object-fit: cover;
+  border-radius: 20px 20px 0 0;
+  transition: transform 0.3s ease;
 }
-.placeholder-image {
-  width: 140px;
-  height: 140px;
+
+.restaurant-img:hover {
+  transform: scale(1.01);
+}
+
+/* =========================
+   🔹 ENCABEZADO
+   ========================= */
+.resScreenHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 25px;
+  padding: 25px 35px 15px 35px;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.restaurant-name2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #222;
+  border: none;
+  outline: none;
+  width: 100%;
+  background: transparent;
+  transition: 0.3s;
+}
+
+.restaurant-name2:focus {
+  border-bottom: 2px solid #007bff;
+}
+
+.restaurant-location {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 0.95rem;
+  color: #444;
+  border-bottom: 1px solid #ddd;
+  padding: 3px;
+  width: 90%;
+}
+
+.restaurant-description {
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 10px;
+  width: 100%;
+  min-height: 70px;
+  font-size: 0.95rem;
+  color: #333;
+  resize: none;
+  background: #fafafa;
+  transition: 0.3s;
+}
+
+.restaurant-description:focus {
+  background: #fff;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.08);
+}
+
+/* =========================
+   🔹 CONTENIDO
+   ========================= */
+.resScreenContent {
+  padding: 25px 35px 40px 35px;
+}
+
+.resScreenContent p {
+  font-size: 0.95rem;
+  color: #333;
+  margin: 12px 0;
+}
+
+.resScreenContent strong {
+  color: #111;
+}
+
+/* =========================
+   🔹 TABLA DE HORARIO
+   ========================= */
+.horario-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0 30px 0;
+  font-size: 0.9rem;
+  background: #fdfdfd;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.horario-table th {
+  text-align: left;
+  padding: 10px 12px;
+  background: #f5f6f7;
+  color: #333;
+  font-weight: 600;
+  border-bottom: 1px solid #eee;
+}
+
+.horario-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.horario-table input[type="time"] {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 5px 8px;
+  font-size: 0.9rem;
+  color: #333;
+  outline: none;
+  transition: 0.2s;
+}
+
+.horario-table input[type="time"]:focus {
+  border-color: #007bff;
+}
+
+.horario-table button {
+  border: none;
+  background: transparent;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 0.85rem;
+  margin-left: 5px;
+  transition: 0.2s;
+}
+
+.horario-table button:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* =========================
+   🔹 INPUTS
+   ========================= */
+input[type="text"],
+input[type="password"],
+textarea,
+select {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 0.95rem;
+  color: #333;
+  outline: none;
+  transition: all 0.2s ease;
+  background: #fafafa;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #007bff;
+  background: #fff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.08);
+}
+
+/* =========================
+   🔹 BOTONES DE ACCIÓN
+   ========================= */
+.edit-client-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding: 25px;
+  border-radius: 0 0 20px 20px;
+  position: fixed;
+  bottom: 0;
+  right: 30px;
+}
+
+.edit-client-button,
+.save-edit-client-button,
+.cancel-edit-client-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
-  background: #f3f4f6;
-  border: 1px dashed #ccc;
-}
-
-.account-info {
-  flex: 1;
-}
-
-.account-name {
-  font-size: 1.8rem;
-  font-weight: 600;
-  margin-bottom: 6px;
-}
-.account-name-input {
+  gap: 6px;
   border: none;
-  border-bottom: 2px solid #ccc;
-  font-size: 1.5rem;
-  outline: none;
-}
-
-.account-description {
-  width: 100%;
-  min-height: 70px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 6px;
-}
-
-.account-buttons {
-  display: flex;
-  gap: 8px;
-}
-
-.btn-edit,
-.btn-save,
-.btn-cancel {
-  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 1rem;
   cursor: pointer;
-  padding: 10px;
-  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
+.edit-client-button {
+  background: #007bff;
   color: #fff;
 }
-.btn-edit {
-  background: #6366f1;
-}
-.btn-save {
-  background: #22c55e;
-}
-.btn-cancel {
-  background: #ef4444;
+
+.save-edit-client-button {
+  background: #00b894;
+  color: #fff;
 }
 
-.account-details,
-.account-schedule,
-.account-pm,
-.account-password {
-  background: #fff;
-  border-radius: 16px;
-  padding: 20px;
-  margin-top: 25px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+.cancel-edit-client-button {
+  background: #ff7675;
+  color: #fff;
 }
 
-.schedule-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
+.edit-client-button:hover {
+  background: #005ed8;
 }
-.schedule-table th,
-.schedule-table td {
-  padding: 10px;
-  border-bottom: 1px solid #eee;
+
+.save-edit-client-button:hover {
+  background: #009d7c;
 }
-.schedule-range {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+
+.cancel-edit-client-button:hover {
+  background: #e64e4e;
 }
-.add-range {
-  margin-top: 5px;
-  background: #f3f4f6;
-  border: 1px dashed #999;
-  border-radius: 6px;
-  padding: 4px 8px;
-  cursor: pointer;
-}
-.remove-range {
+
+/* =========================
+   🔹 BOTÓN PASSWORD
+   ========================= */
+.update-password-button {
+  background: #6c5ce7;
+  color: #fff;
   border: none;
-  background: transparent;
-  color: #dc2626;
-  cursor: pointer;
-}
-
-/* Pago Móvil */
-.pm-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 12px;
-}
-.pm-grid label {
-  font-weight: 500;
-  color: #444;
-}
-.pm-grid input {
-  width: 100%;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 6px;
-}
-
-/* Contraseña */
-.account-password input {
-  border: 1px solid #ddd;
-  padding: 8px;
-  border-radius: 6px;
-  width: 220px;
-  margin-right: 10px;
-}
-.account-password button {
-  background: #3b82f6;
-  color: white;
-  border: none;
+  border-radius: 10px;
   padding: 8px 14px;
-  border-radius: 8px;
+  margin-top: 8px;
   cursor: pointer;
+  font-size: 0.95rem;
+  transition: 0.25s ease;
+}
+
+.update-password-button:hover {
+  background: #5a4bd1;
+}
+
+/* =========================
+   🔹 BLOQUE DE ESTADO
+   ========================= */
+.suspendido {
+  background: #fafafa;
+  border: 1px solid #eee;
+  padding: 12px 15px;
+  border-radius: 12px;
+  margin: 20px 0;
+}
+
+.suspendido p {
+  margin: 0 0 8px 0;
+  font-weight: 500;
+}
+
+/* =========================
+   🔹 RESPONSIVE
+   ========================= */
+@media (max-width: 768px) {
+  .restaurant-img {
+    height: 200px;
+  }
+
+  .resScreenHeader {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .restaurant-name2 {
+    font-size: 1.6rem;
+  }
+
+  .restaurant-description {
+    font-size: 0.9rem;
+  }
+
+  .restaurant-screen-info {
+    border-radius: 12px;
+  }
 }
