@@ -114,6 +114,7 @@ const Login = () => {
               onChange={(e) => setUsuario(e.target.value)}
               required
               autoFocus
+              className="input-login"
             />
             <input
               type="password"
@@ -121,6 +122,7 @@ const Login = () => {
               value={contrasena}
               onChange={(e) => setContrasena(e.target.value)}
               required
+              className="input-login"
             />
             {error && <p className="error">{error}</p>}
             <button className="btn-login" type="submit">

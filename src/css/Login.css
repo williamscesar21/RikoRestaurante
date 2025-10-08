@@ -61,7 +61,7 @@ body {
 }
 
 /* Inputs */
-.login-left input {
+.input-login {
   width: 100%;
   padding: 12px;
   margin-bottom: 20px;
@@ -74,11 +74,11 @@ body {
   color: #ffffff;
 }
 
-.login-left input::placeholder {
+.input-login::placeholder {
   color: #ffffff;
 }
 
-.login-left input:focus {
+.input-login:focus {
   outline: none;
   border-bottom: 2px solid #ff703b;
   border-radius: 0;

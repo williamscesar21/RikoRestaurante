@@ -166,7 +166,6 @@
    🔹 INPUTS
    ========================= */
 input[type="text"],
-input[type="password"],
 textarea,
 select {
   width: 100%;
